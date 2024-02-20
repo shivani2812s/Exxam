@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Student Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="number"],
+        input[type="email"],
+        select,
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #6943CE;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6943CE;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .form-group label {
+            float: left;
+            width: 30%;
+            text-align: right;
+            margin-right: 4%;
+            line-height: 34px;
+        }
+
+        .form-group input,
+        .form-group select {
+            float: left;
+            width: 65%;
+        }
+
+    </style>
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+       const dobInput = document.getElementById('dob');
+const dobError = document.getElementById('dobError');
+
+dobInput.addEventListener('change', function () {
+    const selectedDate = new Date(dobInput.value);
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); 
+
+    if (selectedDate.getTime() >= currentDate.getTime()) {
+        dobError.textContent = 'Please select correct date of berth.';
+        dobInput.value = ''; 
+    }
+    else if(selectedDate.getTime() == currentDate.getTime()) {
+        dobError.textContent = 'Please select correct date of birth';
+        dobInput.value = ''; 
+    }
+    else {
+        dobError.textContent = '';
+    }
+});
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function (event) {
+                const firstName = form.querySelector('#firstname').value;
+                const lastName = form.querySelector('#lastname').value;
+                if (!validateFirstName(firstName) || !validateName(lastName)) {
+                    alert('Please enter valid first and last names.');
+                    event.preventDefault();
+                }
+                const email = form.querySelector('#email').value;
+                if (!validateEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    event.preventDefault();
+                }
+
+                const phoneNumber = form.querySelector('#phno').value;
+                if (!validatePhoneNumber(phoneNumber)) {
+                    alert('Please enter a valid phone number.');
+                    event.preventDefault();
+                }
+
+                const password = form.querySelector('#password').value;
+                const confirmpassword=form.querySelector('#confirmpassword').value;
+                if(password!=confirmpassword){
+                    alert('Password and Confirm password must be same');
+                    event.preventDefault();
+                }
+                if (!validatePassword(password)) {
+                    alert('Password must be at least 8 characters long and contain at least one special character.');
+                    event.preventDefault();
+                }
+
+        const enrollmentNoInput = document.getElementById('enrollmentno');
+        const enrollmentNoError = document.getElementById('enrollmentnoError');
+
+        enrollmentNoInput.addEventListener('input', function () {
+            const enrollmentNoValue = enrollmentNoInput.value;
+
+            if (!/^[a-zA-Z0-9]+$/.test(enrollmentNoValue)) {
+                enrollmentNoError.textContent = 'Enrollment number must be alphanumeric.';
+            } else {
+                enrollmentNoError.textContent = '';
+            }
+        });
+            });
+
+            function validateName(name) {
+                const nameRegex = /^[A-Za-z ]+$/;
+                return nameRegex.test(name);
+            }
+
+             function validateFirstName(firstName) {
+                const nameRegex = /^[^\s]+$/;
+                   return nameRegex.test(firstName);
+                 }
+
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function validatePhoneNumber(phoneNumber) {
+                const phoneRegex = /^\d{10}$/;
+                return phoneRegex.test(phoneNumber);
+            }
+
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
+                return passwordRegex.test(password);
+            }
+        });
+    
+    </script>
+</head>
+<body>
+    <h2>Enter Your Details</h2>
+    <form action="/signup/student" method="POST">
+        <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" id="firstname" name="firstname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Last Name:</label>
+            <input type="text" id="lastname" name="lastname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+    
+        <div class="form-group">
+            <label for="phno">Phone Number:</label>
+            <input type="number" id="phno" name="phno" required>
+        </div>
+
+
+        <div class="form-group">
+         <label for="enrollmentno">Enrollment No:</label>
+         <input type="text" id="enrollmentno" name="enrollmentno" required pattern="[a-zA-Z0-9]+" title="Enrollment number must be alphanumeric">
+        <small id="enrollmentnoError" style="color: red;"></small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="classname">Class Name:</label>
+            <input type="text" id="classname" name="classname" required>
+        </div>
+
+
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+           <input type="date" id="dob" name="dob" required>
+        <small id="dobError" style="color: red;"></small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+         <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <input type="password" id="confirmpassword" name="confirmpassword" required>
+        </div>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

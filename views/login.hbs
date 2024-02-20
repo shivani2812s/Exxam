@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Exam Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+      }
+	  .fg{
+		text-decoration: none;
+		color: grey;
+	  }
+
+      .navbar {
+        background-color: #7776ee;
+        width: 98.9vw;
+        height: 60px;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .signup {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1200px;
+        width: 100%;
+      }
+
+      .signup-form {
+        width: 100%;
+        max-width: 400px;
+        padding: 32px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .signup-image {
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .signup-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        margin-bottom: 8px;
+        color: #afb2be;
+        display: block;
+      }
+
+      .form-style {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .password {
+        position: relative;
+      }
+
+      .fa-eye {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        color: #010914;
+        cursor: pointer;
+        transform: translateY(-50%);
+      }
+
+      .btn {
+        background-color: #6943ce;
+        padding: 10px;
+        width: 100%;
+        margin-top: 15px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #6843ced5;
+        color: white;
+      }
+
+      @media (max-width: 768px) {
+        .signup-form {
+          max-width: none;
+        }
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector('form');
+
+  form.addEventListener('submit', function (event) {
+    const emailInput = form.querySelector('#email');
+    const passwordInput = form.querySelector('#password');
+
+    if (!emailInput.checkValidity()) {
+      emailInput.nextElementSibling.style.display = 'block';
+      event.preventDefault();
+    }
+
+    if (!passwordInput.checkValidity()) {
+      passwordInput.nextElementSibling.style.display = 'block';
+      event.preventDefault();
+    }
+  });
+});
+
+    </script>
+  </head>
+
+  <body>
+    <div class="navbar"></div>
+    <div class="container">
+      <div class="signup">
+        <div class="signup-form">
+          <h2>Exxam</h2>
+          <form>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      class="form-style"
+      type="email"
+      placeholder="Enter your email"
+      id="email"
+      name="email"
+      required
+      pattern="^\S+@\S+\.\S+$"
+    />
+  </div>
+
+  <div class="password">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      placeholder="Enter password"
+      id="password"
+      class="form-style"
+      name="password"
+      required
+      minlength="8"
+    />
+    <i class="fa-solid fa-eye" (click)="toggleIcon()"></i>
+  </div>
+
+  <div>
+    <button class="btn" type="submit">Log In</button>
+  </div>
+</form>
+
+        </div>
+        <div class="signup-image">
+          <img
+            src="https://t3.ftcdn.net/jpg/03/39/70/90/360_F_339709048_ZITR4wrVsOXCKdjHncdtabSNWpIhiaR7.jpg"
+            alt="couldn't preview image"
+            height="350px"
+            width="550px"
+          />
+        </div>
+      </div>
+   

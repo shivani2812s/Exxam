@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Teacher Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: grey;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: grey;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select,
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: rgb(59, 59, 59);
+        }
+
+        input[type="submit"] {
+            background-color: #6943CE;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #6943CE;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .form-group label {
+            float: left;
+            width: 30%;
+            text-align: right;
+            margin-right: 4%;
+            line-height: 34px;
+        }
+
+        .form-group input,
+        .form-group select {
+            float: left;
+            width: 65%;
+        }
+        .container{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .side{
+            height: 675px;
+            width: 330px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        .blank{
+            background-color: white;
+            height: 40%;
+            width: 100%;
+        }
+        .imgcontainer img {
+            max-width: 100%; 
+            max-height: 100%; 
+            display: block;
+            object-fit: cover; 
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Enter Your Details</h2>
+    <div class="container">
+      <div class="form">
+       <form action="/signup/teacher" id="form" method="POST">
+
+        <div class="form-group">
+            <label for="firstname">Firstname:</label>
+            <input type="text" id="firstname" name="firstname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="lastname">Lastname:</label>
+            <input type="text" id="lastname" name="lastname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="phno">Phone No:</label>
+            <input type="number" id="phno" name="phno" required>
+        </div>
+
+        <div class="form-group">
+            <label for="employeeID">EmployeeID:</label>
+            <input type="text" id="employeeID" name="employeeID" required>
+             <small id="employeeIDerror" style="color: red;"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">DOB:</label>
+            <input type="date" id="dob" name="dob" required>
+              <small id="dobError" style="color: red;"></small>
+        </div>
+
+         <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+
+         <div class="form-group">
+            <label for="confirmpassword">Confirm Password:</label>
+            <input type="password" id="confirmpassword" name="confirmpassword" required>
+        </div>
+
+        <input type="submit" value="Submit">
+       </form>
+      </div>
+      <div class="side imgcontainer">
+        <div class="blank"></div>
+        <img src="https://static.vecteezy.com/system/resources/previews/000/227/849/original/vector-math-teacher-illustration.jpg">
+      </div>
+    </div>
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+             const dobInput = document.getElementById('dob');
+        const dobError = document.getElementById('dobError');
+      dobInput.addEventListener('change', function () {
+        const selectedDate = new Date(dobInput.value);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0); 
+
+    if (selectedDate.getTime() >= currentDate.getTime()) {
+        dobError.textContent = 'Please select correct date of berth.';
+        dobInput.value = ''; 
+    }
+    else if(selectedDate.getTime() == currentDate.getTime()) {
+        dobError.textContent = 'Please select correct date of birth';
+        dobInput.value = ''; 
+    }
+    else {
+        dobError.textContent = '';
+    }
+});
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function (event) {
+                const firstName = form.querySelector('#firstname').value;
+                const lastName = form.querySelector('#lastname').value;
+                if (!validateFirstName(firstName) || !validateName(lastName)) {
+                    alert('Please enter valid first and last names.');
+                    event.preventDefault();
+                }
+                const email = form.querySelector('#email').value;
+                if (!validateEmail(email)) {
+                    alert('Please enter a valid email address.');
+                    event.preventDefault();
+                }
+
+                const phoneNumber = form.querySelector('#phno').value;
+                if (!validatePhoneNumber(phoneNumber)) {
+                    alert('Please enter a valid phone number.');
+                    event.preventDefault();
+                }
+                const password = form.querySelector('#password').value;
+                const confirmpassword=form.querySelector('#confirmpassword').value;
+                if(password!=confirmpassword){
+                    alert('Password and confirm password are different');
+                    event.preventDefault();
+                }
+                if (!validatePassword(password)) {
+                    alert('Password must be at least 8 characters long and contain at least one special character.');
+                    event.preventDefault();
+                }
+            });
+        const employeeID = document.getElementById('employeeID');
+        const employeeIDerror = document.getElementById('employeeIDerror');
+
+        employeeID.addEventListener('input', function () {
+            const employeeIDerror = employeeID.value;
+
+            if (!/^[a-zA-Z0-9]+$/.test(employeeIDValue)) {
+                employeeIDerror.textContent = 'employeeID must be alphanumeric.';
+            } else {
+                employeeIDerror.textContent = '';
+            }
+        });
+
+            function validateName(name) {
+                const nameRegex = /^[A-Za-z ]+$/;
+                return nameRegex.test(name);
+            }
+             function validateFirstName(firstName) {
+                const nameRegex = /^[^\s]+$/;
+                   return nameRegex.test(firstName);
+                 }
+
+            function validateEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function validatePhoneNumber(phoneNumber) {
+                const phoneRegex = /^\d{10}$/;
+                return phoneRegex.test(phoneNumber);
+            }
+
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
+                return passwordRegex.test(password);
+            }
+        });
+        
+    </script>
+</body>
+</html>
