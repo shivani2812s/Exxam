@@ -5,7 +5,9 @@ const loginController=require('../controllers/loginController');
 const studentController=require('../controllers/studentController');
 const teacherController=require('../controllers/teacherController');
 const passwordController=require('../controllers/passwordController');
+
 router.get('/login', loginController.viewlogin);
+router.post('/login',loginController.userlogin);
 
 router.get('/signup/student',studentController.viewstudentSignup);
 router.post('/signup/student',studentController.studentSignup);
