@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Student Form</title>
-    <style>
+    <title>New Student Registration</title>
+ <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -45,7 +45,8 @@
             box-sizing: border-box;
         }
 
-        input[type="submit"] {
+        input[type="submit"],
+        input[type="button"] {
             background-color: #6943CE;
             color: white;
             padding: 10px 20px;
@@ -53,6 +54,8 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
+            display: block; 
+            margin: 0 auto; 
         }
 
         input[type="submit"]:hover {
@@ -83,91 +86,133 @@
             width: 65%;
         }
 
+        /* Responsive CSS */
+        @media screen and (max-width: 600px) {
+            form {
+                max-width: 90%;
+            }
+
+            .form-group label {
+                float: none;
+                width: 100%;
+                text-align: left;
+                margin-right: 0;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+            }
+
+            input[type="submit"],
+            input[type="button"] {
+                width: 100%;
+            }
+        }
+
     </style>
-     <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
-       const dobInput = document.getElementById('dob');
-const dobError = document.getElementById('dobError');
+    const dobInput = document.getElementById('dob');
+    const dobError = document.getElementById('dobError');
+    const currentDate = new Date().toISOString().split('T')[0];
+    
+    dobInput.setAttribute('max', currentDate);
 
-dobInput.addEventListener('change', function () {
-    const selectedDate = new Date(dobInput.value);
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); 
+    dobInput.addEventListener('change', function () {
+        const selectedDate = new Date(dobInput.value);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0); 
 
-    if (selectedDate.getTime() >= currentDate.getTime()) {
-        dobError.textContent = 'Please select correct date of berth.';
-        dobInput.value = ''; 
-    }
-    else if(selectedDate.getTime() == currentDate.getTime()) {
-        dobError.textContent = 'Please select correct date of birth';
-        dobInput.value = ''; 
-    }
-    else {
-        dobError.textContent = '';
-    }
-});
+        if (selectedDate.getTime() >= currentDate.getTime()) {
+            dobError.textContent = 'Please select correct date of berth';
+            dobInput.value = ''; 
+        } else {
+            dobError.textContent = '';
+        }
+    });
 
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function (event) {
-                const firstName = form.querySelector('#firstname').value;
-                const lastName = form.querySelector('#lastname').value;
+
+            const registrationForm = document.getElementById('registrationForm');
+            const otpForm = document.getElementById('otpForm');
+            const passwordForm = document.getElementById('passwordForm');
+
+
+            function showRegistrationForm() {
+                registrationForm.style.display = 'block';
+                otpForm.style.display = 'none';
+                passwordForm.style.display = 'none';
+            }
+
+            function showOtpForm() {
+                registrationForm.style.display = 'none';
+                otpForm.style.display = 'block';
+                passwordForm.style.display = 'none';
+            }
+
+            function showPasswordForm() {
+                registrationForm.style.display = 'none';
+                otpForm.style.display = 'none';
+                passwordForm.style.display = 'block';
+            }
+
+            document.getElementById('nextToOtpBtn').addEventListener('click', function (event) {
+                // Validate registration form inputs
+                // If valid, proceed to OTP verification
+                const firstName = document.getElementById('firstname').value;
+                const lastName = document.getElementById('lastname').value;
+                const email = document.getElementById('email').value;
+                const enrollmentNoInput = document.getElementById('enrollmentno');
+                const enrollmentnovalue=document.getElementById('enrollmentno').value;
+                const dobvalue=document.getElementById('dob').value;
+;                const enrollmentNoError = document.getElementById('enrollmentnoError');
+                const classname=document.getElementById('classname').value;
+                const gender=document.getElementById('gender').value;
+                 if (!firstName || !lastName || !email || !enrollmentNoInput || !dobvalue || !classname || !gender) {
+                      alert('Please fill in all fields.');
+                   event.preventDefault();
+                    return;
+                    }
                 if (!validateFirstName(firstName) || !validateName(lastName)) {
                     alert('Please enter valid first and last names.');
                     event.preventDefault();
+                    return;
                 }
-                const email = form.querySelector('#email').value;
+               
                 if (!validateEmail(email)) {
                     alert('Please enter a valid email address.');
                     event.preventDefault();
+                    return;
                 }
-
-                const phoneNumber = form.querySelector('#phno').value;
-                if (!validatePhoneNumber(phoneNumber)) {
-                    alert('Please enter a valid phone number.');
-                    event.preventDefault();
-                }
-
-                const password = form.querySelector('#password').value;
-                const confirmpassword=form.querySelector('#confirmpassword').value;
-                if(password!=confirmpassword){
-                    alert('Password and Confirm password must be same');
-                    event.preventDefault();
-                }
-                if (!validatePassword(password)) {
-                    alert('Password must be at least 8 characters long and contain at least one special character.');
-                    event.preventDefault();
-                }
-
-        const enrollmentNoInput = document.getElementById('enrollmentno');
-        const enrollmentNoError = document.getElementById('enrollmentnoError');
-
-        enrollmentNoInput.addEventListener('input', function () {
-            const enrollmentNoValue = enrollmentNoInput.value;
-
+                enrollmentNoInput.addEventListener('input', function () {
+                const enrollmentNoValue = enrollmentNoInput.value;
             if (!/^[a-zA-Z0-9]+$/.test(enrollmentNoValue)) {
                 enrollmentNoError.textContent = 'Enrollment number must be alphanumeric.';
             } else {
                 enrollmentNoError.textContent = '';
             }
         });
+
+                showOtpForm();
             });
 
-            function validateName(name) {
+             function validateName(name) {
+                const newname=name.trim();
                 const nameRegex = /^[A-Za-z ]+$/;
-                return nameRegex.test(name);
+                return nameRegex.test(newname);
             }
 
              function validateFirstName(firstName) {
+                const firstnamenew=firstName.trim();
                 const nameRegex = /^[^\s]+$/;
-                   return nameRegex.test(firstName);
+                   return nameRegex.test(firstnamenew);
                  }
 
-            function validateEmail(email) {
+           function validateEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
-
-            function validatePhoneNumber(phoneNumber) {
+         function validatePhoneNumber(phoneNumber) {
                 const phoneRegex = /^\d{10}$/;
                 return phoneRegex.test(phoneNumber);
             }
@@ -176,14 +221,82 @@ dobInput.addEventListener('change', function () {
                 const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
                 return passwordRegex.test(password);
             }
+
+            document.getElementById('nextToPasswordBtn').addEventListener('click', function (event) {
+                // Validate OTP input and verify
+                // If verified, proceed to password creation   
+                const phoneNumber =document.getElementById('phno').value;
+                if(!phoneNumber){
+                    alert('Please fill your number');
+                   event.preventDefault();
+                    return;
+                }
+                if (!validatePhoneNumber(phoneNumber, event)) {
+                    alert('Please enter a valid phone number.');
+                    event.preventDefault();
+                    return;
+                }
+                showPasswordForm();
+            });
+            // Function to submit the registration form
+            function submitRegistrationForm() {
+                // Submit the registration form to the server
+                alert('Registration successful!');
+            }
+
+            // Attach submit event listener to the registration form
+            registrationForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                submitRegistrationForm();
+            });
+
+            // Function to submit the OTP verification form
+            function submitOtpForm() {
+                // Submit the OTP form to the server for verification
+                alert('OTP verified successfully!');
+            }
+
+            // Attach submit event listener to the OTP form
+            otpForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                submitOtpForm();
+            });
+
+            // Function to submit the password creation form
+            function submitPasswordForm() {
+                // Submit the password form to the server
+
+                alert('Password created successfully!');
+            }
+
+            // Attach submit event listener to the password form
+            passwordForm.addEventListener('submit', function (event) {
+                const password =  document.getElementById('password').value;
+                const confirmpassword = document.getElementById('confirmpassword').value;
+                if(password !== confirmpassword){
+                    alert('Password and Confirm password must be same');
+                    event.preventDefault();
+                    return;
+                }
+                if (!validatePassword(password, event)) {
+                    alert('Password must be at least 8 characters long and contain at least one special character.');
+                    event.preventDefault();
+                }
+                event.preventDefault();
+                submitPasswordForm();
+            });
+
+            // Show the registration form by default
+            showRegistrationForm();
         });
-    
     </script>
 </head>
 <body>
-    <h2>Enter Your Details</h2>
-    <form action="/signup/student" method="POST">
-        <div class="form-group">
+    <h2>Student Registration</h2>
+
+    <form id="registrationForm" action="/signup/student" method="POST">
+        <!-- Registration form fields -->
+         <div class="form-group">
             <label for="firstname">First Name:</label>
             <input type="text" id="firstname" name="firstname" required>
         </div>
@@ -200,41 +313,44 @@ dobInput.addEventListener('change', function () {
 
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <select id="gender" name="gender" required>
+            <select id="gender" name="gender" 'required'>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
         </div>
-
-    
-        <div class="form-group">
-            <label for="phno">Phone Number:</label>
-            <input type="number" id="phno" name="phno" required>
-        </div>
-
-
-        <div class="form-group">
+         <div class="form-group">
          <label for="enrollmentno">Enrollment No:</label>
          <input type="text" id="enrollmentno" name="enrollmentno" required pattern="[a-zA-Z0-9]+" title="Enrollment number must be alphanumeric">
         <small id="enrollmentnoError" style="color: red;"></small>
         </div>
-
-
-        <div class="form-group">
+         <div class="form-group">
             <label for="classname">Class Name:</label>
             <input type="text" id="classname" name="classname" required>
         </div>
 
-
-        <div class="form-group">
-            <label for="dob">Date of Birth:</label>
-           <input type="date" id="dob" name="dob" required>
+       <div class="form-group">
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob" required min="1900-01-01">
         <small id="dobError" style="color: red;"></small>
         </div>
 
+        <input type="button" id="nextToOtpBtn" value="Next">
+    </form>
 
-        <div class="form-group">
+    <form id="otpForm" style="display: none;">
+        <!-- OTP verification fields -->
+         <div class="form-group">
+            <label for="phno">Phone Number:</label>
+           <input type="text" id="phno" name="phno" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+        </div>
+
+        <input type="button" id="nextToPasswordBtn" value="Next">
+    </form>
+
+    <form id="passwordForm" style="display: none;">
+        <!-- Password creation fields -->
+         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
@@ -244,5 +360,6 @@ dobInput.addEventListener('change', function () {
         </div>
         <input type="submit" value="Submit">
     </form>
+
 </body>
 </html>

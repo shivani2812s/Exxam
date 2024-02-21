@@ -22,7 +22,4 @@ const studentSignup = async (req, res) => {
     }
 };
 
-const viewstudentSignup=(re,res)=>{
-    res.render('studentSignup');
-}
-module.exports={studentSignup,viewstudentSignup};
+module.exports={studentSignup};

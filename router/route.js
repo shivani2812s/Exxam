@@ -12,10 +12,12 @@ router.get('/',dashboardController.viewmaindashboard);
 router.get('/login', loginController.viewlogin);
 router.post('/login',loginController.userlogin);
 
-router.get('/signup/student',studentController.viewstudentSignup);
+router.get('/signup',(req,res)=>{
+    res.render('signup');
+});
+
 router.post('/signup/student',studentController.studentSignup);
 
-router.get('/signup/teacher',teacherController.viewSignup);
 router.post('/signup/teacher',teacherController.teacherSignup);
 
 router.get('/forgetpassword',passwordController.forget);

@@ -1,9 +1,4 @@
 const Teacher=require('../models/teacherModel');
-
-const viewSignup=(req,res)=>{
-    res.render('teacherSignup');
-}
-
 const teacherSignup = async (req, res) => {
     try {
         const { firstname,lastname,gender,phno,employeeID,email,dob,password} = req.body;
@@ -24,4 +19,4 @@ const teacherSignup = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-module.exports={viewSignup,teacherSignup};
+module.exports={teacherSignup};

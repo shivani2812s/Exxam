@@ -113,6 +113,41 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+
+            const roleSelect = document.getElementById('role');
+
+            const studentFields = document.getElementById('studentFields');
+
+            const teacherFields = document.getElementById('teacherFields');
+
+            const formData = {};
+
+             const actionUrl = (roleSelect.value === 'student') ? '/signup/student' : '/signup/teacher';
+
+             roleSelect.addEventListener('change', function () {
+                if (roleSelect.value === 'student') {
+                    studentFields.style.display = 'block';
+                    teacherFields.style.display = 'none';
+                    registrationForm.action = "/signup/student";
+                    otpForm.action = "/signup/student";
+                    passwordForm.action = "/signup/student";
+                    registrationForm.method='post';
+                    otpForm.method='post';
+                    passwordForm.method='post';
+                } 
+                
+                else if (roleSelect.value === 'teacher') {
+                    studentFields.style.display = 'none';
+                    teacherFields.style.display = 'block';
+                    registrationForm.action = "/signup/teacher";
+                    registrationForm.method='post';
+                    otpForm.action = "/signup/teacher";
+                     otpForm.method='post';
+                    passwordForm.action = "/signup/teacher";
+                     passwordForm.method='post';
+                }
+
+            });
     const dobInput = document.getElementById('dob');
     const dobError = document.getElementById('dobError');
     const currentDate = new Date().toISOString().split('T')[0];
@@ -160,26 +195,30 @@
                 // Validate registration form inputs
                 // If valid, proceed to OTP verification
                 const firstName = document.getElementById('firstname').value;
-
                 const lastName = document.getElementById('lastname').value;
-
                 const email = document.getElementById('email').value;
-
-                const employeeidInput = document.getElementById('employeeid');
-
-                const employeeidvalue=document.getElementById('employeeid').value;
-
+                const enrollmentNoInput = document.getElementById('enrollmentno');
+                const enrollmentnovalue=document.getElementById('enrollmentno').value;
                 const dobvalue=document.getElementById('dob').value;
-
-                const employeeidError = document.getElementById('employeeidError');
-
+                const enrollmentNoError = document.getElementById('enrollmentnoError');
+                const classname=document.getElementById('classname').value;
                 const gender=document.getElementById('gender').value;
-
-                 if (!firstName || !lastName || !email || !dobvalue || !gender || !employeeidvalue) {
+                const employeeid=document.getElementById('employeeid').value;
+                
+                    if(roleSelect.value==='student' && (!firstName || !lastName || !email || !enrollmentNoInput.value || !dobvalue || !classname || !gender))
+                    {
                       alert('Please fill in all fields.');
-                   event.preventDefault();
-                    return;
+                     event.preventDefault();
+                     return;
                     }
+                    else  {
+                        if(roleSelect.value==='teacher' && (!firstName || !lastName || !email || !employeeid || !dobvalue || !gender)){
+                             alert('Please fill in all fields.');
+                             event.preventDefault();
+                             return;
+                        }
+                    }
+
                 if (!validateFirstName(firstName) || !validateName(lastName)) {
                     alert('Please enter valid first and last names.');
                     event.preventDefault();
@@ -192,14 +231,15 @@
                     return;
                 }
 
-            employeeidInput.addEventListener('input', function () {
-                
-                    if (!/^[a-zA-Z0-9]+$/.test(employeeidvalue)) {
-                    employeeidError.textContent = 'Employee Id number must be alphanumeric.';
-                    } else {
-                employeeidError.textContent = '';
+                enrollmentNoInput.addEventListener('input', function () {
+                const enrollmentNoValue = enrollmentNoInput.value;
+            if (!/^[a-zA-Z0-9]+$/.test(enrollmentNoValue)) {
+                enrollmentNoError.textContent = 'Enrollment number must be alphanumeric.';
+            } else {
+                enrollmentNoError.textContent = '';
             }
         });
+             formData.registrationData = new FormData(registrationForm);
                 showOtpForm();
             });
 
@@ -224,9 +264,9 @@
                 return phoneRegex.test(phoneNumber);
             }
 
-            function validatePassword(password) {
-                const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
-                return passwordRegex.test(password);
+           function validatePassword(password) {
+          const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
+          return passwordRegex.test(password);
             }
 
             document.getElementById('nextToPasswordBtn').addEventListener('click', function (event) {
@@ -243,6 +283,7 @@
                     event.preventDefault();
                     return;
                 }
+                 formData.otpData = new FormData(otpForm);
                 showPasswordForm();
             });
             // Function to submit the registration form
@@ -286,24 +327,55 @@
                     return;
                 }
                 if (!validatePassword(password, event)) {
-                    alert('Password must be at least 8 characters long and contain at least one special character.');
+                    alert('Password must be at least 8 characters long and contain at least one special character, one UpperCase letter and one Lowercase letter.');
                     event.preventDefault();
+                    return;
                 }
                 event.preventDefault();
+              
+                formData.passwordData = new FormData(passwordForm);
                 submitPasswordForm();
             });
 
+
+            function sendDataToServer(actionUrl, formData) {
+                // Combine all form data
+                const combinedData = {};
+                for (let data of formData) {
+                    for (let pair of data) {
+                        combinedData[pair[0]] = pair[1];
+                    }
+                }
+
+                // Make an HTTP request to send data to the server
+                fetch(actionUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(combinedData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        alert('Data submitted successfully!');
+                    } else {
+                        alert('Failed to submit data!');
+                    }
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting data!');
+                });
+            }
             // Show the registration form by default
             showRegistrationForm();
         });
     </script>
 </head>
 <body>
-    <h2>Student Registration</h2>
+    <h2>User Registration</h2>
 
     <form id="registrationForm" action="/signup/student" method="POST">
         <!-- Registration form fields -->
-         <div class="form-group">
+        <div class="form-group">
             <label for="firstname">First Name:</label>
             <input type="text" id="firstname" name="firstname" required>
         </div>
@@ -320,22 +392,51 @@
 
         <div class="form-group">
             <label for="gender">Gender:</label>
-            <select id="gender" name="gender" 'required'>
+            <select id="gender" name="gender" required>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
             </select>
         </div>
-         <div class="form-group">
-         <label for="employeeid">Employee Id:</label>
-         <input type="text" id="employeeid" name="employeeid" required pattern="[a-zA-Z0-9]+" title="Employee Id number must be alphanumeric">
-        <small id="employeeidError" style="color: red;"></small>
+
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select id="role" name="role" required>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
         </div>
 
-       <div class="form-group">
-        <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" required min="1900-01-01">
-        <small id="dobError" style="color: red;"></small>
+        <div id="studentFields">
+            <!-- Student-specific fields -->
+            <div class="form-group">
+                <label for="enrollmentno">Enrollment No:</label>
+                <input type="text" id="enrollmentno" name="enrollmentno" required pattern="[a-zA-Z0-9]+" title="Enrollment number must be alphanumeric">
+                <small id="enrollmentnoError" style="color: red;"></small>
+            </div>
+             <div class="form-group">
+            <label for="classname">Class Name:</label>
+            <input type="text" id="classname" name="classname" required>
+        </div>
+
+            <!-- Other student-specific fields -->
+        </div>
+
+        <div id="teacherFields" style="display: none;">
+            <!-- Teacher-specific fields -->
+            <div class="form-group">
+                <label for="employeeid">Employee Id:</label>
+                <input type="text" id="employeeid" name="employeeid" required pattern="[a-zA-Z0-9]+" title="Employee Id number must be alphanumeric">
+                <small id="employeeidError" style="color: red;"></small>
+            </div>
+
+            <!-- Other teacher-specific fields -->
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required min="1900-01-01">
+            <small id="dobError" style="color: red;"></small>
         </div>
 
         <input type="button" id="nextToOtpBtn" value="Next">
@@ -343,9 +444,9 @@
 
     <form id="otpForm" style="display: none;">
         <!-- OTP verification fields -->
-         <div class="form-group">
+        <div class="form-group">
             <label for="phno">Phone Number:</label>
-           <input type="text" id="phno" name="phno" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            <input type="text" id="phno" name="phno" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
         </div>
 
         <input type="button" id="nextToPasswordBtn" value="Next">
@@ -353,11 +454,11 @@
 
     <form id="passwordForm" style="display: none;">
         <!-- Password creation fields -->
-         <div class="form-group">
+        <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
         </div>
-         <div class="form-group">
+        <div class="form-group">
             <label for="confirmpassword">Confirm Password:</label>
             <input type="password" id="confirmpassword" name="confirmpassword" required>
         </div>
