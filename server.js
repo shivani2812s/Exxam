@@ -7,6 +7,7 @@ const path = require('path');
 const hbs = require('hbs');
 const bodyParser=require('body-parser');
 const router = require('./router/route');
+const questionRouter=require('./router/questions');
 const staticPath = path.join(__dirname, "./static");
 const viewPath = path.join(__dirname, "./views");
 const layoutPath = path.join(__dirname, "./views/layout");
@@ -27,6 +28,8 @@ mongoose.connect(DB, {
 });
 
 app.use('/',router);
+
+app.use('/questions',questionRouter);
 
 app.listen(port||3001, () => {
     console.log("Server running on port", port);

@@ -25,4 +25,10 @@ router.post('/forgetpassword',passwordController.forgetPassword);
 
 router.get('/resetpassword',passwordController.reset);
 router.post('/resetpassword',passwordController.resetPassword);
+
+
+
+router.get('/student/question',(req,res)=>{
+        res.render('questions');
+})
 module.exports = router;

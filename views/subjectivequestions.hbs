@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Subjective Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #6943CE;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5638a3;
+        }
+
+        .question-group {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .remove-question {
+            color: red;
+            cursor: pointer;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <h2>Create Subjective Questions</h2>
+
+    <form id="questionForm" action="/questions/create/subjective" method="POST">
+        <div id="questionsContainer">
+            <div class="question-group">
+                <div class="form-group">
+                    <label for="class">Class:</label>
+                    <select class="class" name="classname" required>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="examType">Exam Type:</label>
+                    <select class="examType" name="examType" required>
+                        <option value="midterm">Midterm</option>
+                        <option value="final">Final</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+                
+                 <div class="form-group">
+                <label for="duration">Duration (in minutes):</label>
+                <input type="number" id="duration" name="duration" required>
+            </div>
+
+                <div class="form-group">
+                    <label for="questionHeading">Question Heading:</label>
+                    <input type="text" class="questionHeading" name="questionHeading[]" required>
+                </div>
+                <span class="remove-question" onclick="removeQuestion(this)">Remove</span>
+            </div>
+        </div>
+
+        <button type="button" onclick="addQuestion()">Add Question</button>
+        <input type="submit" value="Create Questions">
+    </form>
+
+    <script>
+        function addQuestion() {
+            const questionsContainer = document.getElementById('questionsContainer');
+
+            const questionGroup = document.createElement('div');
+            questionGroup.classList.add('question-group');
+
+            const questionHTML = `
+                <div class="form-group">
+                    <label for="class">Class:</label>
+                    <select class="class" name="class[]" required>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="examType">Exam Type:</label>
+                    <select class="examType" name="examType[]" required>
+                        <option value="midterm">Midterm</option>
+                        <option value="final">Final</option>
+                        <!-- Add more options as needed -->
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="questionHeading">Question Heading:</label>
+                    <input type="text" class="questionHeading" name="questionHeading[]" required>
+                </div>
+
+                <span class="remove-question" onclick="removeQuestion(this)">Remove</span>
+            `;
+
+            questionGroup.innerHTML = questionHTML;
+
+            questionsContainer.appendChild(questionGroup);
+        }
+
+        function removeQuestion(element) {
+            const questionGroup = element.parentElement;
+            questionGroup.remove();
+        }
+    </script>
+</body>
+</html>

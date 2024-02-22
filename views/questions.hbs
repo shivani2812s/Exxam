@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjective Questions</title>
+    <!-- Include Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Subjective Questions</h1>
+
+    <!-- Container to display all subjective questions -->
+    <div id="questions">
+        <!-- Subjective questions will be dynamically rendered here -->
+        {{#each subjectiveQuestions}}
+        <div class="question-container" data-question-id="{{questionNumber}}">
+            <h3>{{this.questionHeading}}</h3>
+            <!-- Text editor for answer -->
+            <div id="editor-{{questionNumber}}" class="editor"></div>
+            <!-- File upload option -->
+            <input type="file" id="file-{{questionNumber}}" class="file-upload">
+            <!-- Button to submit answer -->
+            <button onclick="submitAnswer('{{questionNumber}}')">Submit Answer</button>
+        </div>
+        {{/each}}
+    </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Function to create a text editor
+        function createTextEditor(containerId) {
+            const container = document.getElementById(containerId);
+            const editor = new Quill(container, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'link']
+                    ]
+                },
+                placeholder: 'Write your answer here...'
+            });
+        }
+
+        // Call the function to create text editors for each question
+        const questionContainers = document.querySelectorAll('.question-container');
+        questionContainers.forEach(container => {
+            const questionId = container.getAttribute('data-question-id');
+            createTextEditor(`editor-${questionId}`);
+        });
+
+        // Function to submit answer
+        function submitAnswer(questionId) {
+            const editorContent = document.getElementById(`editor-${questionId}`).querySelector('.ql-editor').innerHTML;
+            const fileInput = document.getElementById(`file-${questionId}`).files[0];
+            // You can handle the submission logic here
+            console.log('Editor Content:', editorContent);
+            console.log('Uploaded File:', fileInput);
+            // Add logic to send the answer to the server
+        }
+    </script>
+</body>
+</html>
