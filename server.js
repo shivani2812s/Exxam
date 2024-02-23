@@ -4,7 +4,11 @@ require('dotenv').config();
 const app = express();
 const port = process.env.port;
 const path = require('path');
+const Tesseract = require('tesseract.js');
 const hbs = require('hbs');
+hbs.registerHelper('increment', function(value) {
+    return value + 1;
+});
 const bodyParser=require('body-parser');
 const router = require('./router/route');
 const questionRouter=require('./router/questions');

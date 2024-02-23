@@ -16,6 +16,7 @@ router.get('/objective', async (req, res) => {
 router.get('/subjective', async (req, res) => {
     try {
         const subjectiveQuestions = await SubjectiveQuestion.find();
+        console.log(subjectiveQuestions);
         res.render('questions',{subjectiveQuestions});
     } catch (error) {
         res.status(500).json({ error: error.message });

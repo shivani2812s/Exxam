@@ -40,4 +40,4 @@ const SubjectiveQuestion = mongoose.model('SubjectiveQuestion', subjectiveQuesti
 const Class = mongoose.model('Class', classSchema);
 const Exam = mongoose.model('Exam', examSchema);
 
-module.exports = { ObjectiveQuestion, SubjectiveQuestion,Class, Exam };
+module.exports = { ObjectiveQuestion, SubjectiveQuestion,Class,Exam };
