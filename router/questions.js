@@ -3,14 +3,6 @@ const mongoose=require('mongoose')
 const {ObjectiveQuestion,SubjectiveQuestion}=require('../models/questions');
 const router = express.Router();
 // Route to get all objective questions
-router.get('/objective', async (req, res) => {
-    try {
-        const objectiveQuestions = await ObjectiveQuestion.find();
-        res.status(200).json(objectiveQuestions);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
 
 // Route to get all subjective questions
 router.get('/subjective', async (req, res) => {
@@ -22,6 +14,15 @@ router.get('/subjective', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+router.get('/objective',async(req,res)=>{
+    try {
+        const objectiveQuestions = await ObjectiveQuestion.find();
+        res.render('showobjectivequestions',{objectiveQuestions});
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+})
 
 //route to upload an objective question
 router.get('/create/objective',(req,res)=>{

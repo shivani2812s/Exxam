@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const subjectiveQuestionSchema = new mongoose.Schema({
     classname: String,
-    examType: String,
+    examType: [String], // Allow an array of strings
     duration: Number,
     questions: [{
         questionHeading: String,

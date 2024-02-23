@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjective Questions</title>
+    <style>
+        /* Add your CSS styling here */
+        /* Add your CSS styling here */
+body {
+    font-family: Arial, sans-serif;
+}
+<style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .question {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .question h3 {
+            margin-top: 0;
+        }
+        .options {
+            margin-top: 10px;
+        }
+        .options ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .options ul li {
+            margin-bottom: 5px;
+            cursor: pointer; /* Add cursor pointer for better interaction */
+        }
+        .options ul li input[type="radio"] {
+            margin-right: 10px; /* Add margin to separate radio button from text */
+        }
+      .maincontainer{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .details{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    </style>
+</head>
+<body>
+    <div class="maincontainer">
+    <div id="questionsContainer">
+    <!-- Questions will be dynamically rendered here -->
+    {{#each objectiveQuestions}}
+    <div class="details">
+    <h3>{{classname}}</h3>
+    <h3>{{examType}}</h3>
+    </div>
+     <div>Attemp All The Questions</div>
+     <br>   
+        {{#each questions}}
+            <div class="question">
+                <h3>{{questionHeading}}</h3>
+                <div class="options">
+                    <ul>
+                        {{#each options}}
+                            {{#each (splitOptions this)}}
+                                <li><input type="radio">{{this}}</li>
+                            {{/each}}
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+        {{/each}}
+    {{/each}}
+</div>
+
+{{!-- Define a helper to split options string --}}
+{{#if options}}
+    {{#each (splitOptions options)}}
+        {{this}}
+    {{/each}}
+{{/if}}
+</div>
+
+<script>
+    // Define a Handlebars helper to split options string by comma
+    hbs.registerHelper('splitOptions', function(optionsString) {
+        return optionsString.split(',');
+    });
+</script>
+
+</body>
+</html>

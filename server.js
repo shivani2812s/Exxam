@@ -9,6 +9,9 @@ const hbs = require('hbs');
 hbs.registerHelper('increment', function(value) {
     return value + 1;
 });
+hbs.registerHelper('splitOptions', function(optionsString) {
+    return optionsString.split(',');
+});
 const bodyParser=require('body-parser');
 const router = require('./router/route');
 const questionRouter=require('./router/questions');
