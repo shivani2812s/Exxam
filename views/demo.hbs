@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #6d20d73b;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .options button {
+            margin: 0 10px; /* Adjust margin to create space between buttons */
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #6943CE;
+            color: #fff;
+        }
+
+        .options button:hover {
+            background-color: #5d36af;
+        }
+
+        .question-type {
+            margin-bottom: 20px;
+        }
+
+        .question-type h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .question {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-number {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .question input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .options input[type="text"] {
+            width: calc(100% - 10px);
+            margin-right: 10px;
+        }
+
+        .options input[type="text"]:last-child {
+            margin-right: 0;
+        }
+
+        .options::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #6943CE;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #5d36af;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .remove-btn {
+            background-color: red;
+            width: 11%;
+            padding: 12px 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="header">
+            <h1>Create Questions</h1>
+        </div>
+        <div class="options-container">
+            <button id="rbtn" onclick="toggleCreateQuestion()">Create Question</button>
+        </div>
+        <div id="question-options" style="display: none;">
+            <div class="options-container">
+                <div class="option1" id="option-buttons">
+                    <button onclick="toggleQuestionType('choice')">Choice</button>
+                    <button onclick="toggleQuestionType('text')">Text</button>
+                </div>
+            </div>
+            <div id="choice-question" class="question-type" style="display: none;">
+                <!-- HTML for creating choice questions -->
+                <h2>Choice Question</h2>
+                <div id="choice-form">
+                    <div class="question">
+                        <span class="question-number">Question - 1. </span>
+                        <input type="text" placeholder="Enter question heading">
+                        <div class="options">
+                            <input type="text" placeholder="Option 1">
+                            <input type="text" placeholder="Option 2">
+                            <input type="text" placeholder="Option 3">
+                            <input type="text" placeholder="Option 4">
+                        </div>
+                        <button class="remove-btn" onclick="removeQuestion(this)">Remove</button>
+                    </div>
+                </div>
+                <button onclick="addChoiceQuestion()">Add</button>
+            </div>
+            <div id="text-question" class="question-type" style="display: none;">
+                <!-- HTML for creating text questions -->
+                <h2>Text Question</h2>
+                <div id="text-form">
+                    <div class="question">
+                        <span class="question-number">Question - 1. </span>
+                        <input type="text" placeholder="Enter question heading">
+                        <button class="remove-btn" onclick="removeQuestion(this)">Remove</button>
+                    </div>
+                </div>
+                <button onclick="addTextQuestion()">Add</button>
+            </div>
+            <div id="sbtn" class="submit-btn" style="display: none;">
+                <button onclick="submitFormData()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <!-- Submit button outside of form-container -->
+  
+    <script>
+        function toggleCreateQuestion() {
+            const questionOptions = document.getElementById('question-options');
+            const createButton = document.querySelector('.options-container button');
+            if (questionOptions.style.display === 'none') {
+                questionOptions.style.display = 'block';
+                 document.getElementById('rbtn').style.display='none';
+              
+            } else {
+                questionOptions.style.display = 'none';
+                createButton.textContent = 'Create Question';
+            }
+        }
+
+        function toggleQuestionType(type) {
+            if (type === 'choice') {
+                document.getElementById('choice-question').style.display = 'block';
+                document.getElementById('sbtn').style.display = 'block';
+                document.getElementById('text-question').style.display = 'none';
+                document.getElementById('rbtn').style.display='none';
+                document.getElementById('option-buttons').style.display = 'none'; // hide option buttons
+                
+            } else if (type === 'text') {
+                document.getElementById('choice-question').style.display = 'none';
+                document.getElementById('text-question').style.display = 'block';
+                document.getElementById('sbtn').style.display = 'block';
+                document.getElementById('rbtn').style.display='none';
+                document.getElementById('option-buttons').style.display = 'none'; // hide option buttons
+            }
+        }
+
+        function addChoiceQuestion() {
+            const choiceForm = document.getElementById('choice-form');
+            const questions = choiceForm.querySelectorAll('.question');
+            const newQuestionNumber = questions.length + 1;
+
+            const newQuestion = document.createElement('div');
+            newQuestion.classList.add('question');
+            newQuestion.innerHTML = `
+                <div class="question-number">Question - ${newQuestionNumber}. </div>
+                <input type="text" placeholder="Enter question heading">
+                <div class="options">
+                    <input type="text" placeholder="Option 1">
+                    <input type="text" placeholder="Option 2">
+                    <input type="text" placeholder="Option 3">
+                    <input type="text" placeholder="Option 4">
+                </div>
+                <button class="remove-btn" onclick="removeQuestion(this)">Remove</button>
+            `;
+            choiceForm.appendChild(newQuestion);
+        }
+
+        function addTextQuestion() {
+            const textForm = document.getElementById('text-form');
+            const questions = textForm.querySelectorAll('.question');
+            const newQuestionNumber = questions.length + 1;
+
+            const newQuestion = document.createElement('div');
+            newQuestion.classList.add('question');
+            newQuestion.innerHTML = `
+                <div class="question-number">Question - ${newQuestionNumber}. </div>
+                <input type="text" placeholder="Enter question heading">
+                <button class="remove-btn" onclick="removeQuestion(this)">Remove</button>
+            `;
+            textForm.appendChild(newQuestion);
+        }
+
+        function removeQuestion(button) {
+            const questionDiv = button.parentElement;
+            questionDiv.remove();
+            updateQuestionNumbers();
+        }
+
+        function updateQuestionNumbers() {
+            const questions = document.querySelectorAll('.question');
+            questions.forEach((question, index) => {
+                const numberDiv = question.querySelector('.question-number');
+                if (numberDiv) {
+                    numberDiv.textContent = `Question - ${index + 1}. `;
+                }
+            });
+        }
+
+        function submitFormData() {
+            const choiceQuestions = [];
+            const textQuestions = [];
+
+            // Retrieve choice questions data
+            const choiceForm = document.getElementById('choice-form');
+            const choiceQuestionInputs = choiceForm.querySelectorAll('.question input[type="text"]');
+            choiceQuestionInputs.forEach((input, index) => {
+                const question = {
+                    number: index + 1,
+                    heading: input.value,
+                    options: []
+                };
+                const optionInputs = input.parentElement.querySelectorAll('.options input[type="text"]');
+                optionInputs.forEach(optionInput => {
+                    question.options.push(optionInput.value);
+                });
+                choiceQuestions.push(question);
+            });
+
+            // Retrieve text questions data
+            const textForm = document.getElementById('text-form');
+            const textQuestionInputs = textForm.querySelectorAll('.question input[type="text"]');
+            textQuestionInputs.forEach((input, index) => {
+                const question = {
+                    number: index + 1,
+                    heading: input.value
+                };
+                textQuestions.push(question);
+            });
+
+            // Prepare data to send
+            const data = {
+                choiceQuestions: choiceQuestions,
+                textQuestions: textQuestions
+            };
+
+            // Send data to appropriate route
+            if (choiceQuestions.length > 0) {
+                // Submit choice questions data to /create/objective route
+                fetch('questions/create/objective', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Choice questions submitted successfully!");
+                    } else {
+                        alert("Failed to submit choice questions!");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Failed to submit choice questions!");
+                });
+            }
+
+           else if (textQuestions.length > 0) {
+                // Submit text questions data to /create/subjective route
+                fetch('questions/create/subjective', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Text questions submitted successfully!");
+                    } else {
+                        alert("Failed to submit text questions!");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Failed to submit text questions!");
+                });
+            }
+        }
+    </script>
+</body>
+</html>

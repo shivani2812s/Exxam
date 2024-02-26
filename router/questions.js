@@ -2,6 +2,11 @@ const express = require('express');
 const mongoose=require('mongoose')
 const {ObjectiveQuestion,SubjectiveQuestion}=require('../models/questions');
 const router = express.Router();
+
+router.get('/demo',(req,res)=>{
+    res.render('demo');
+})
+
 // Route to get all objective questions
 
 // Route to get all subjective questions
@@ -71,6 +76,23 @@ router.post('/create/objective', async (req, res) => {
 router.get('/create/subjective',(req,res)=>{
     res.render('subjectivequestions');
 })
+
+
+router.post('/process_image', async (req, res) => {
+    const imageFile = req.files['image'];
+    if (imageFile) {
+        const imageBuffer = fs.readFileSync(imageFile.path);
+        try {
+            const text = await kraken.rpred(imageBuffer);
+            res.json({ text });
+        } catch (error) {
+            console.error('Error processing image:', error);
+            res.status(500).json({ error: 'Error processing image' });
+        }
+    } else {
+        res.status(400).json({ error: 'No image provided' });
+    }
+});
 
 
 // Route to save the uploaded subjective question
