@@ -142,15 +142,15 @@
     <div id="questionForm" style="display: none;">
         <div id="detailscontainer" style="display: none;">
             <Label for="Date">Date Of Exam</Label><br>
-            <input name="date" type="date" placeholder="Date of Exam?"><br>
+            <input name="date" id="date" type="date" placeholder="Date of Exam?"><br>
             <label for="subject">Subject</label><br>
-            <input name="subject" type="text" placeholder="Enter Subject"><br>
+            <input name="subject" id="subject" type="text" placeholder="Enter Subject"><br>
             <label for="examType">Exam Type</label><br>
-            <input name="examType" type="text" placeholder="Enter ExamType">
+            <input name="examType" id="examType" type="text" placeholder="Enter ExamType">
             <label for="time">Start Time</label><br>
-            <input type="time" placeholder="Enter Start Time">
+            <input type="time" id="startTime" placeholder="Enter Start Time">
             <label for="time">End Time</label><br>
-            <input type="time" placeholder="Enter End Time">
+            <input type="time" id="EndTime" placeholder="Enter End Time">
         </div>
       <div id="questionsContainer"></div>
       <div class="btn">
@@ -290,20 +290,42 @@
     }
  
     document.getElementById('submitBtn').addEventListener('click', () => {
+      const date=document.getElementById('date').value.trim();
+      const subject=document.getElementById('subject').value.trim();
+      const startTime=document.getElementById('startTime').value.trim();
+      const EndTime=document.getElementById('EndTime').value.trim();
+      const examType=document.getElementById('examType').value.trim();
+      
+      
+      if (date === '' || subject === '' || startTime === '' || EndTime === '' || examType === '') {
+        window.alert('Please fill in all fields.');
+        return;
+      }
       
       for (let i = 1; i <= questionCount; i++) {
         const questionType = document.getElementById(`questionType${i}`).value;
-        const question = document.getElementById(`questionInput${i}`).value;
+        const question = document.getElementById(`questionInput${i}`).value.trim();
         let options = [];
  
         if (questionType === 'mcq') {
-          options = Array.from(document.querySelectorAll(`#options${i} input`)).map(input => input.value);
+          options = Array.from(document.querySelectorAll(`#options${i} input`)).map(input => input.value.trim());
         }
- 
-        
-        console.log(`Question ${i} - Type: ${questionType}, Question: ${question}, Options: ${options}`);
+        console.log(` ${date},${subject},${startTime},${EndTime},${examType},Question ${i} - Type: ${questionType}, Question: ${question}, Options: ${options},`);
       }
+      window.alert('data saved sucessfully')
     });
+  </script>
+  <script>
+   
+    document.querySelectorAll('input, textarea, select').forEach(input => {
+      input.addEventListener('change', () => {
+        input.value = input.value.trim();
+      });
+    });
+  </script>
+  <script>
+   
+    document.getElementById('date').setAttribute('min', new Date().toISOString().split('T')[0]);
   </script>
 </body>
 </html>
