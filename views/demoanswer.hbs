@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam List</title>
+    <style>
+       
+       body{
+        background-color: #6843ce62;
+       }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="examList">
+        <!-- Exam data will be displayed here -->
+    </div>
+
+    <script>
+        const exams = [
+            { _id: '65df1558301901d2dc67b576', dateOfExam: '2024-02-28', subject: 'Mathematics', type: 'mcq', startTime: '09:00', endTime: '11:00' },
+            { _id: '2', dateOfExam: '2024-03-05', subject: 'Physics', type: 'text', startTime: '10:00', endTime: '12:00' }
+        ];
+        function renderExamList() {
+            const examListDiv = document.getElementById('examList');
+            const table = document.createElement('table');
+            const headerRow = table.insertRow();
+            const headers = ['Date', 'Subject', 'Type', 'Start Time', 'End Time', 'Action'];
+            headers.forEach(headerText => {
+                const header = document.createElement('th');
+                header.textContent = headerText;
+                headerRow.appendChild(header);
+            });
+
+            exams.forEach(exam => {
+                const row = table.insertRow();
+                ['dateOfExam', 'subject', 'type', 'startTime', 'endTime'].forEach(key => {
+                    const cell = row.insertCell();
+                    cell.textContent = exam[key];
+                });
+
+                const viewQuestionsButton = document.createElement('button');
+                viewQuestionsButton.textContent = 'View Questions';
+                viewQuestionsButton.onclick = () => viewQuestions(exam._id); // Pass exam ID to viewQuestions function
+                const actionCell = row.insertCell();
+                actionCell.appendChild(viewQuestionsButton);
+            });
+
+            examListDiv.innerHTML = ''; // Clear previous content
+            examListDiv.appendChild(table);
+        }
+
+        // Function to handle button click to view questions
+        function viewQuestions(examId) {
+            // Redirect to a page where questions associated with the exam can be viewed
+            window.location.href = `/questions/view-questions?${examId}`;
+        }
+
+        // Render the exam list on page load
+        window.onload = renderExamList;
+    </script>
+</body>
+</html>

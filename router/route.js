@@ -8,7 +8,9 @@ const passwordController=require('../controllers/passwordController');
 const dashboardController=require('../controllers/dashboardController');
 
 //router.get('/',dashboardController.viewmaindashboard);
-
+router.post('/questiondata',(req,res)=>{
+    console.log(req.body);
+})
 router.get('/login', loginController.viewlogin);
 router.post('/login',loginController.userlogin);
 

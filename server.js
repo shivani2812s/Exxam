@@ -4,8 +4,10 @@ require('dotenv').config();
 const app = express();
 const port = process.env.port;
 const path = require('path');
+const data=require('./data');
 const Tesseract = require('tesseract.js');
 const hbs = require('hbs');
+const Question=require('./models/questions');
 hbs.registerHelper('increment', function(value) {
     return value + 1;
 });
@@ -33,6 +35,17 @@ mongoose.connect(DB, {
 }).catch((err) => {
     console.error('Connection failed:', err.message);
 });
+
+
+
+// Question.insertMany(data).then(()=>{
+//   console.log("question data stored sucessfully");
+//   mongoose.connection.close();
+// }).catch((error)=>{
+//   console.log(error);
+//   mongoose.connection.close();
+// })
+
 
 app.use('/',router);
 

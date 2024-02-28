@@ -55,17 +55,15 @@
 </head>
 <body>
     <div class="heading1">
-    <h1>Subjective Questions</h1>
+    <h1>Answer The Questions</h1>
    
     <!-- Container to display all subjective questions -->
     <div id="questions">
         <!-- Subjective questions will be dynamically rendered here -->
-        {{#each subjectiveQuestions}}
-        <h3> Class-{{this.classname}}</h3>
-            {{#each this.questions}}
+        {{#each Questions}}
                 <div class="question-container">
                     <h3>Question {{increment @index}}</h3> <!-- Display question number -->
-                    <h4>{{this.questionHeading}}</h4> <!-- Display question heading -->
+                    <h4>{{this.question}}</h4> <!-- Display question heading -->
                     <!-- Text editor for answer -->
                     <div class="editor"></div>
                     <!-- File upload option -->
@@ -73,7 +71,6 @@
                     <!-- Button to submit answer -->
                     <button class="btn" onclick="submitAnswer(this)">Submit Answer</button>
                 </div>
-            {{/each}}
         {{/each}}
     </div>
  </div>

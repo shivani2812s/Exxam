@@ -295,7 +295,7 @@
       const startTime=document.getElementById('startTime').value.trim();
       const EndTime=document.getElementById('EndTime').value.trim();
       const examType=document.getElementById('examType').value.trim();
-      
+      const questionsData = [];      
       
       if (date === '' || subject === '' || startTime === '' || EndTime === '' || examType === '') {
         window.alert('Please fill in all fields.');
@@ -311,7 +311,40 @@
           options = Array.from(document.querySelectorAll(`#options${i} input`)).map(input => input.value.trim());
         }
         console.log(` ${date},${subject},${startTime},${EndTime},${examType},Question ${i} - Type: ${questionType}, Question: ${question}, Options: ${options},`);
+        questionsData.push({ questionType, question, options });
       }
+
+             // Prepare exam data object
+        var examData = {
+            dateOfExam: date,
+            subject: subject,
+            startTime: startTime,
+            endTime: EndTime,
+            examType: examType,
+            questions: questionsData
+        };
+
+        console.log(examData);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/questions/create/exam');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function() {
+            if (xhr.status === 201) {
+                alert('Exam created successfully');
+                
+            } else {
+                console.error('Failed to create exam:', xhr.responseText);
+                alert('Failed to create exam. Please try again later.');
+            }
+        };
+        xhr.onerror = function() {
+            console.error('Error creating exam:', xhr.statusText);
+            alert('Failed to create exam. Please try again later.');
+        };
+        xhr.send(JSON.stringify(examData));
+
+
       window.alert('data saved sucessfully')
     });
   </script>
