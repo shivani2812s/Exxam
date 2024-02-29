@@ -33,29 +33,23 @@
         <table>
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Subject</th>
-                    <th>Type</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>Enrollment No.</th>
+                    <th>Phone no.</th>
+                    <th>Gender</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {{#each exam}}
+                {{#each students}}
                 <tr>
-                    <td>{{dateOfExam}}</td>
-                    <td>{{subject}}</td>
-                    <td>{{#if questions.length}}Mixed{{else}}Text{{/if}}</td>
-                    <td>{{startTime}}</td>
-                    <td>{{endTime}}</td>
-                    <td>
-                        {{#if questions.length}}
-                        <button onclick="viewQuestions('{{_id}}')">View Questions</button>
-                        {{else}}
-                        No Questions
-                        {{/if}}
-                    </td>
+                    <td>{{this.firstname}}</td>
+                    <td>{{this.lastname}}</td>
+                    <td>{{this.enrollmentno}}</td>
+                    <td>{{phno}}</td>
+                    <td>{{gender}}</td>
+                    <td><button>View</button></td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -64,6 +58,7 @@
 
     <script>
         function viewQuestions(examId) {
+            
             window.location.href = `/questions/view-questions/${examId}`;
         }
     </script>

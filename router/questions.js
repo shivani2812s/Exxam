@@ -1,19 +1,21 @@
-const express = require('express');
-const mongoose=require('mongoose')
+const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
-const {Question,Exam}=require('../models/questions');
+const { Question, Exam } = require("../models/questions");
 
-router.get('/demo',(req,res)=>{
-    res.render('demo');
-})
+router.get("/demo", (req, res) => {
+  res.render("demo");
+});
 
-router.get('/view/questions', async (req, res) => {
-    try {
-        const Questions = await Question.find();
-        res.render('questions',{Questions});
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+router.get("/view/questions", async (req, res) => {
+  try {
+    const Questions = await Question.find();
+    console.log(Questions);
+    res.render("questions", { Questions });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // router.get('/objective',async(req,res)=>{
@@ -31,18 +33,15 @@ router.get('/view/questions', async (req, res) => {
 //     res.render('objectivequestions',{examdetails});
 // })
 
-
 //route to save the uploaded objective question
 // router.post('/create/objective', async (req, res) => {
 //     try {
 //         const {classname, examType, duration, questionHeading, options } = req.body;
 
-        
 //         if (!Array.isArray(questionHeading) || !Array.isArray(options)) {
 //             return res.status(400).json({ error: 'Question heading and options must be provided as arrays' });
 //         }
 
-    
 //         const questions = [];
 //         for (let i = 0; i < questionHeading.length; i++) {
 //             questions.push({
@@ -66,43 +65,36 @@ router.get('/view/questions', async (req, res) => {
 //     }
 // });
 
-
-
-
 //route to upload subjective question
 // router.get('/create/subjective',(req,res)=>{
 //     res.render('subjectivequestions');
 // })
 
-
-router.post('/process_image', async (req, res) => {
-    const imageFile = req.files['image'];
-    if (imageFile) {
-        const imageBuffer = fs.readFileSync(imageFile.path);
-        try {
-            const text = await kraken.rpred(imageBuffer);
-            res.json({ text });
-        } catch (error) {
-            console.error('Error processing image:', error);
-            res.status(500).json({ error: 'Error processing image' });
-        }
-    } else {
-        res.status(400).json({ error: 'No image provided' });
+router.post("/process_image", async (req, res) => {
+  const imageFile = req.files["image"];
+  if (imageFile) {
+    const imageBuffer = fs.readFileSync(imageFile.path);
+    try {
+      const text = await kraken.rpred(imageBuffer);
+      res.json({ text });
+    } catch (error) {
+      console.error("Error processing image:", error);
+      res.status(500).json({ error: "Error processing image" });
     }
+  } else {
+    res.status(400).json({ error: "No image provided" });
+  }
 });
-
 
 // Route to save the uploaded subjective question
 // router.post('/create/subjective', async (req, res) => {
 //     try {
 //         const {classname, examType, duration, questionHeading} = req.body;
 
-        
 //         if (!Array.isArray(questionHeading)) {
 //             return res.status(400).json({ error: 'Question heading must be provided as arrays' });
 //         }
 
-    
 //         const questions = [];
 //         for (let i = 0; i < questionHeading.length; i++) {
 //             questions.push({
@@ -125,43 +117,57 @@ router.post('/process_image', async (req, res) => {
 //     }
 // });
 
+router.post("/create/exam", async (req, res) => {
+  try {
+    const { dateOfExam, subject, questions, type, startTime, endTime } =
+      req.body;
 
-router.post('/create/exam',async(req,res)=>{
-    try {
-        const { dateOfExam, subject, questions, type, startTime, endTime } = req.body;
- 
-        console.log(req.body);
+    console.log(req.body);
 
-        const questionIds = [];
-        for (const question of questions) {
-            const newQuestion = new Question(question);
-            await newQuestion.save();
-            questionIds.push(newQuestion._id);
-        }
-        const newExam = new Exam({
-            dateOfExam,
-            subject,
-            questions: questionIds,
-            type,
-            startTime,
-            endTime,
-        });
- 
-        await newExam.save();
-        res.status(201).json({ message: 'Exam created successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+    const questionIds = [];
+    for (const question of questions) {
+      const newQuestion = new Question(question);
+      await newQuestion.save();
+      questionIds.push(newQuestion._id);
     }
+    const newExam = new Exam({
+      dateOfExam,
+      subject,
+      questions: questionIds,
+      type,
+      startTime,
+      endTime,
+    });
+
+    await newExam.save();
+
+    res.status(201).json({ message: "Exam created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-router.get('/view/exam',(req,res)=>{
-    res.render('demoanswer');
-})
+router.get("/view/exam", async (req, res) => {
+  try {
+    const exam = await Exam.find().populate("questions");
+    // return res.status(200).json({ exam: exam });
+    res.render("demoanswer", { exam });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-router.get('/view-questions/:id',async(req,res)=>{
-        const examID=req.params.id;
-        const examdetails=await Exam.findById({_id:examID});
-        res.render('reset');
+router.get("/view-questions/:id", async (req, res) => {
+  const examID = req.params.id;
+  const examdetails = await Exam.findById({ _id: examID }).populate("questions");
+  if(examdetails.questions){
+    console.log(examdetails);
+    res.render("questions", { examdetails });
+  }
+});
+router.post('/save-answer',(req,res)=>{
+    res.send('answers submitted');
 })
 module.exports = router;

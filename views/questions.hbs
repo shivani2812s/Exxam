@@ -1,152 +1,185 @@
-<!-- questions.html -->
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subjective Questions</title>
-    <!-- Include Quill CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-      <style>
-       body{
-        background-color: white;
-       }
-        .ql-editor {
-    box-sizing: border-box;
-    line-height: 1.42;
-    height: 100%;
-    outline: none;
-    overflow-y: auto;
-    padding: 12px 15px;
-    tab-size: 4;
-    -moz-tab-size: 4;
-    text-align: left;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    width: 600px;
-}
-.ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-top: 0px;
-    width: 600px;
-}
-.ql-toolbar.ql-snow {
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    padding: 8px;
-    width: 600px;
-}
-.btn {
-    padding: 5px 5px;
-    margin-top: 15px;
-    background-color: #6943CE;
-    color: white;
+    <style>
+       body {
+    border: black solid 1px;
+    background-color: #6943ce1f;
     border-radius: 5px;
 }
+        .ql-editor {
+            box-sizing: border-box;
+            line-height: 1.42;
+            height: 100%;
+            outline: none;
+            overflow-y: auto;
+            padding: 12px 15px;
+            tab-size: 4;
+            -moz-tab-size: 4;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width: 600px;
+        }
 
-.heading1{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+        .ql-toolbar.ql-snow+.ql-container.ql-snow {
+            border-top: 0px;
+            width: 600px;
+        }
+
+        .ql-toolbar.ql-snow {
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+            padding: 8px;
+            width: 600px;
+        }
+
+        .btn {
+            padding: 5px 5px;
+            margin-top: 15px;
+            background-color: #6943CE;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .heading1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+        }
+      .file-upload {
+    background-color: #6943ce;
+    color: white;
+    width: 30%;
 }
     </style>
 </head>
+
 <body>
     <div class="heading1">
-    <h1>Answer The Questions</h1>
-   
-    <!-- Container to display all subjective questions -->
-    <div id="questions">
-        <!-- Subjective questions will be dynamically rendered here -->
-        {{#each Questions}}
-                <div class="question-container">
-                    <h3>Question {{increment @index}}</h3> <!-- Display question number -->
-                    <h4>{{this.question}}</h4> <!-- Display question heading -->
-                    <!-- Text editor for answer -->
-                    <div class="editor"></div>
-                    <!-- File upload option -->
-                    <input  type="file" class="file-upload">
-                    <!-- Button to submit answer -->
-                    <button class="btn" onclick="submitAnswer(this)">Submit Answer</button>
-                </div>
+        {{!-- <h1>Answer The Questions</h1> --}}
+        {{#each examdetails}}
+        {{#if this.questions.length}}
+        <div id="questions">
+            <h4>Attempt All the questions</h4>
+            <h3> Subject: {{this.subject}}</h3>
+            <h3>date:{{this.dateOfExam}}</h3>
+            {{#each this.questions}}
+            <div class="question-container">
+                <h3>Question {{increment @index}}</h3>
+                <h4>{{this.question}}</h4>
+                {{#if (eq this.questionType "text")}}
+                <div class="editor"></div>
+                <br>
+                <input type="file" class="file-upload">
+                {{else if (eq this.questionType "mcq")}}
+                {{#each this.options}}
+                <input type="radio" name="mcq_{{@../index}}" value="{{this}}">
+                <label>{{this}}</label><br>
+                {{/each}}
+                {{/if}}
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div></div>
+        {{/if}}
         {{/each}}
+        <button class="btn" onclick="submitAnswer(this)">Submit Answer</button>
     </div>
- </div>
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/tesseract.js/dist/tesseract.min.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js/dist/tesseract.min.js"></script>
 
     <script>
-        // Define Handlebars helper function to increment index
-   
         // Function to create a text editor
         function createTextEditor(container) {
-    const editor = new Quill(container, {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['link', 'image'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'indent': '-1'}, { 'indent': '+1' }],
-                [{ 'align': [] }],
-                ['clean'], // Remove formatting
-                [{ 'font': [] }],
-                [{ 'size': ['small', false, 'large', 'huge'] }],
-                [{ 'color': [] }, { 'background': [] }], // Text and background color
-                ['blockquote', 'code-block'],
-            ],
-        },
-        placeholder: 'Type your answer here...'
-    });
-    return editor;
-}
+            const editor = new Quill(container, {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['link', 'image'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'indent': '-1' }, { 'indent': '+1' }],
+                        [{ 'align': [] }],
+                        ['clean'], 
+                        [{ 'font': [] }],
+                        [{ 'size': ['small', false, 'large', 'huge'] }],
+                        [{ 'color': [] }, { 'background': [] }], // Text and background color
+                        ['blockquote', 'code-block'],
+                    ],
+                },
+                placeholder: 'Type your answer here...'
+            });
+            return editor;
+        }
 
-
-        // Call the function to create text editors for each question
         const editorContainers = document.querySelectorAll('.editor');
         editorContainers.forEach(container => createTextEditor(container));
-        // Define Handlebars helper function to increment index
-hbs.registerHelper('increment', function(value) {
-    return value + 1;
-});
 
-        // Function to submit answer
-        // Function to submit answer
-async function submitAnswer(button) {
-    const questionContainer = button.closest('.question-container');
-    const editorContent = questionContainer.querySelector('.ql-editor').innerHTML;
-    const fileInput = questionContainer.querySelector('.file-upload').files[0];
-    console.log(editorContent);
-    // Check if a file is selected
-    if (fileInput) {
-        try {
-            const recognizedText = await performOCR(fileInput);
-            // Append the recognized text to the text editor
-           console.log(recognizedText);
-        } catch (error) {
-            console.error('Error performing OCR:', error);
+        async function submitAnswer(button) {
+            const questionContainer = button.closest('.question-container');
+            const editorContent = questionContainer.querySelector('.ql-editor').innerHTML;
+            const fileInput = questionContainer.querySelector('.file-upload').files[0];
+            console.log(editorContent);
+            const answerData = {
+                textAnswer: editorContent,
+                file: fileInput ? fileInput.name : null
+            };
+
+            try {
+                const response = await fetch('/save-answer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(answerData)
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    console.log('Answer saved successfully:', responseData);
+                } else {
+                    console.error('Failed to save answer:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error saving answer:', error);
+            }
+
+            
+            if (fileInput) {
+                try {
+                    const recognizedText = await performOCR(fileInput);
+                    console.log('OCR Text:', recognizedText);
+                } catch (error) {
+                    console.error('Error performing OCR:', error);
+                }
+            } else {
+                console.log('No file selected');
+            }
         }
-    } else {
-        console.error('No file selected');
-    }
-}
 
-// Function to perform OCR using Tesseract.js
-async function performOCR(imageFile) {
-    return new Promise((resolve, reject) => {
-        Tesseract.recognize(
-            imageFile,
-            'eng', // language code
-            { logger: m => console.log(m) } // logger
-        ).then(({ data: { text } }) => {
-            resolve(text);
-        }).catch(reject);
-    });
-}  </script>
+        async function performOCR(imageFile) {
+            return new Promise((resolve, reject) => {
+                Tesseract.recognize(
+                    imageFile,
+                    'eng', 
+                    { logger: m => console.log(m) } 
+                ).then(({ data: { text } }) => {
+                    resolve(text);
+                }).catch(reject);
+            });
+        }
+    </script>
 </body>
+
 </html>

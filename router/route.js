@@ -6,10 +6,13 @@ const studentController=require('../controllers/studentController');
 const teacherController=require('../controllers/teacherController');
 const passwordController=require('../controllers/passwordController');
 const dashboardController=require('../controllers/dashboardController');
+const {Student}=require('../models/studentModel');
+const {Exam}=require('../models/questions');
 
-//router.get('/',dashboardController.viewmaindashboard);
-router.post('/questiondata',(req,res)=>{
-    console.log(req.body);
+
+router.get('/',async(req,res)=>{
+    const exam = await Exam.find();
+    res.render('UI',{exam});
 })
 router.get('/login', loginController.viewlogin);
 router.post('/login',loginController.userlogin);
@@ -32,5 +35,10 @@ router.post('/resetpassword',passwordController.resetPassword);
 
 router.get('/student/question',(req,res)=>{
         res.render('questions');
+})
+
+router.get('/allstudents',async(req,res)=>{
+    const students=await Student.find();
+    res.render('allstudents',{students});
 })
 module.exports = router;

@@ -215,7 +215,8 @@
       optionsDiv.className = 'options-container';
       optionsDiv.style.display = 'none';
  
-      for (let i = 1; i <= 4; i++) {
+      const numOptionsToShow = 2; 
+      for (let i = 1; i <= numOptionsToShow; i++) {
         const optionInput = document.createElement('input');
         optionInput.type = 'text';
         optionInput.placeholder = `Option ${i}`;
@@ -283,7 +284,8 @@
       questionTypeSelect.addEventListener('change', () => {
         const selectedQuestionType = questionTypeSelect.value;
         optionsDiv.style.display = selectedQuestionType === 'mcq' ? 'block' : 'none';
-        removeQuestionButton.style.height=selectedQuestionType==='mcq'?'5%':'12%';
+        removeQuestionButton.style.height=selectedQuestionType==='mcq'?'5.5%':'12%';
+        removeQuestionButton.style.width=selectedQuestionType==='mcq'?'5.5%':'5';
         addOptionButton.style.display = selectedQuestionType === 'mcq' ? 'block' : 'none';
         removeOptionButton.style.display = selectedQuestionType === 'mcq' ? 'block' : 'none';
       });
@@ -314,7 +316,7 @@
         questionsData.push({ questionType, question, options });
       }
 
-             // Prepare exam data object
+            
         var examData = {
             dateOfExam: date,
             subject: subject,
@@ -344,8 +346,6 @@
         };
         xhr.send(JSON.stringify(examData));
 
-
-      window.alert('data saved sucessfully')
     });
   </script>
   <script>

@@ -14,9 +14,15 @@ hbs.registerHelper('increment', function(value) {
 hbs.registerHelper('splitOptions', function(optionsString) {
     return optionsString.split(',');
 });
+hbs.registerHelper('eq', function(a, b) {
+    return a === b ? true : false;
+});
+
 const bodyParser=require('body-parser');
 const router = require('./router/route');
 const questionRouter=require('./router/questions');
+const studentRouter=require('./router/students');
+const teacherRouter=require('./router/teachers');
 const staticPath = path.join(__dirname, "./static");
 const viewPath = path.join(__dirname, "./views");
 const layoutPath = path.join(__dirname, "./views/layout");
@@ -39,7 +45,7 @@ mongoose.connect(DB, {
 
 
 // Question.insertMany(data).then(()=>{
-//   console.log("question data stored sucessfully");
+//   console.log("admin stored sucessfully");
 //   mongoose.connection.close();
 // }).catch((error)=>{
 //   console.log(error);
@@ -48,8 +54,9 @@ mongoose.connect(DB, {
 
 
 app.use('/',router);
-
+app.use('/students',studentRouter);
 app.use('/questions',questionRouter);
+app.use('/teachers',teacherRouter);
 
 app.listen(port||3001, () => {
     console.log("Server running on port", port);
