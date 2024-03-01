@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        body{
-            height: 100%;
+        .maindiv{
+            height:100vh;
             width: 100%;
-            background-color: #6843ce;
+            display: flex;
+            
+        }
+        .left{
+            height: 100vh;
+            width: 18%;
+            background-color: black;
+        }
+        .right
+        {
+            height: 100vh;
+            width: 80%;
+             background-color:#f1f3f6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            
         }
-        #navbar{
+         #navbar{
             height: 50px;
             width: 100%;
             background-color: #ffffff;
@@ -53,11 +64,12 @@
         }
         #det1{
             border-radius: 5px;
-            background-color: white;
+           background-color: #ffffff;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-radius: 8px;
+           
         }
          #det3{
             border-radius: 5px;
@@ -70,11 +82,11 @@
             
         }
          #det2{
-            border-radius: 5px;
+            border-radius: 8px;
             background-color: rgb(212, 212, 212);
             display: flex;
             justify-content: space-between;
-             border-radius: 8px;
+          
              justify-content: space-between;
             
          
@@ -87,13 +99,13 @@
       #search {
             margin: 0px 20px;
             float: right;
-            padding: 4px 20px;
+            padding: 8px 25px;
             border: none;
             margin-top: px;
             margin-right: 16px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: rgba(128, 128, 128, 0.247);
+            background-color: #F1F3F6;
             color: black;
 }
         .notification{
@@ -121,6 +133,7 @@
           flex-direction: column;
           align-items: center;
           background-color: #FFFFFF;
+          border-radius: 8px;
 }
         .count a{
             text-decoration: none;
@@ -214,30 +227,69 @@
   text-decoration: none;
   color:rgb(77, 75, 75);;
 }
+.profile{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
 #heading1{
     margin-left: 20px;
    margin-top: 50px;
 }
-.profile{
-  height: 40px;
-  width: 40px;
-  background-color: rgb(150, 147, 147);
-  border-radius: 50%;
-  margin-right: 20px;
+.teacherHeading{
+    margin-top: 110px;
+    
 }
+button{
+    height: 60px;
+    width: 250px;
+    border-radius: 10px;
+  background-color: black;
+    color: white;
+    margin-top: 15px;
+    cursor: pointer;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  
+}
+.dropdown{
+    margin-left: 30px;
+    padding: 10px 2px;
+    height: 60px;
+    width: 100px;
+   
+}
+.drop{
+    cursor: pointer;
+}
+
+
     </style>
 </head>
 <body>
-    
-        <div class="nav" id="navbar">
+    <div class="maindiv">
+        <div class="left">
+            <div class="teacherHeading">
+                <button id="btn1" onclick=dashboarddetails><h4 style="color: white;">Admin  Dashboard </h4></button><br>
+                <div class="dropdown" style="display: none;">
+                   
+                        <div class="drop" id="drop1"><h3 style="color: white;">Student</h3></div>
+                        <div class="drop" id="drop1"><h3 style="color: white;">Exam</h3></div>
+                </div>
+                <button id="btn2" onclick=dashboarddetails><h4 style="color: white;">Teacher  Dashboard </h4></button><br>
+                <button id="btn3" onclick=dashboarddetails><h4 style="color: white;">Student  Dashboard </h4></button><br>
+            </div>
+        </div>
+        <div class="right">
+             <div class="nav" id="navbar">
             <div>
                 <input id="search" type="text" placeholder="Search here">
             </div>
              <div class="profile">
              </div>
         </div>
-        <h1 id="heading1" style="color: white;">Welcome Admin!</h1>
+         <h1 id="heading1" style="color: black;">Welcome Admin!</h1>
         <div class="details-section">
+           
             <div class="det1" id="det1">
                 <div class="studentcount">
                   <a href="/students/allstudents"> <h3 style="color: #060606;">Total Students</h3></a> 
@@ -286,5 +338,14 @@
                 
             </div>
         </div>
+        </div>
+    </div>
+    <script>
+        function dashboarddetails{
+            const btn=document.getElementsByClassName('dropdown');
+            const drop=document.getElementById('btn');
+            drop.style.display='block';
+        }
+    </script>
 </body>
 </html>

@@ -253,6 +253,10 @@ button{
     width: 100px;
    
 }
+.drop{
+    cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -261,10 +265,9 @@ button{
             <div class="teacherHeading">
                 <button id="btn" onclick=dashboarddetails><h2 style="color: white;">Teacher Dashboard </h2></button>
                 <div class="dropdown" style="display: block;">
-                    <ul>
-                        <div><h3 style="color: white;">Student</h3></div>
-                        <div><h3 style="color: white;">Exam</h3></div>
-                    </ul>
+                   
+                        <div class="drop" id="drop1"><h3 style="color: white;">Student</h3></div>
+                        <div class="drop" id="drop1"><h3 style="color: white;">Exam</h3></div>
                 </div>
             </div>
         </div>
