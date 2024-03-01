@@ -9,7 +9,9 @@ const dashboardController=require('../controllers/dashboardController');
 const {Student}=require('../models/studentModel');
 const {Exam}=require('../models/questions');
 
-
+router.get('/demodash',(req,res)=>{
+    res.render('demodash')
+})
 router.get('/',async(req,res)=>{
     const exam = await Exam.find();
     res.render('UI',{exam});
@@ -37,8 +39,5 @@ router.get('/student/question',(req,res)=>{
         res.render('questions');
 })
 
-router.get('/allstudents',async(req,res)=>{
-    const students=await Student.find();
-    res.render('allstudents',{students});
-})
+
 module.exports = router;

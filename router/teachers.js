@@ -10,4 +10,7 @@ const teachers=await Teachers.find();
 res.render('allteachers',{teachers})
 });
 
+router.get('/teacherdashboard',async(req,res)=>{
+    res.render('UIteacher');
+})
 module.exports = router;
