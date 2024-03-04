@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Student Registration</title>
- <style>
+    <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -19,10 +20,10 @@
         }
 
         .navbar {
-        background-color: #7776ee;
-        width: 98.9vw;
-        height: 60px;
-      }
+            background-color: #7776ee;
+            width: 98.9vw;
+            height: 60px;
+        }
 
         form {
             max-width: 400px;
@@ -60,8 +61,8 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            display: block; 
-            margin: 0 auto; 
+            display: block;
+            margin: 0 auto;
         }
 
         input[type="submit"]:hover {
@@ -115,7 +116,6 @@
                 width: 100%;
             }
         }
-
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -126,52 +126,61 @@
 
             const teacherFields = document.getElementById('teacherFields');
 
-            const formData = {};
+            const formData = {
+                firstname: '',
+                lastname: '',
+                password: '',
+                gender: '',
+                phno: 0,
+                uniqueId: '',
+                classname: '',
+                email: '',
+                dob: '',
+                userType: '',
+            };
 
-             const actionUrl = (roleSelect.value === 'student') ? '/signup/student' : '/signup/teacher';
-
-             roleSelect.addEventListener('change', function () {
+            roleSelect.addEventListener('change', function () {
                 if (roleSelect.value === 'student') {
                     studentFields.style.display = 'block';
                     teacherFields.style.display = 'none';
                     registrationForm.action = "/signup/student";
                     otpForm.action = "/signup/student";
                     passwordForm.action = "/signup/student";
-                    registrationForm.method='post';
-                    otpForm.method='post';
-                    passwordForm.method='post';
-                } 
-                
+                    registrationForm.method = 'post';
+                    otpForm.method = 'post';
+                    passwordForm.method = 'post';
+                }
+
                 else if (roleSelect.value === 'teacher') {
                     studentFields.style.display = 'none';
                     teacherFields.style.display = 'block';
                     registrationForm.action = "/signup/teacher";
-                    registrationForm.method='post';
+                    registrationForm.method = 'post';
                     otpForm.action = "/signup/teacher";
-                     otpForm.method='post';
+                    otpForm.method = 'post';
                     passwordForm.action = "/signup/teacher";
-                     passwordForm.method='post';
+                    passwordForm.method = 'post';
                 }
 
             });
-    const dobInput = document.getElementById('dob');
-    const dobError = document.getElementById('dobError');
-    const currentDate = new Date().toISOString().split('T')[0];
-    
-    dobInput.setAttribute('max', currentDate);
+            const dobInput = document.getElementById('dob');
+            const dobError = document.getElementById('dobError');
+            const currentDate = new Date().toISOString().split('T')[0];
 
-    dobInput.addEventListener('change', function () {
-        const selectedDate = new Date(dobInput.value);
-        const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0); 
+            dobInput.setAttribute('max', currentDate);
 
-        if (selectedDate.getTime() >= currentDate.getTime()) {
-            dobError.textContent = 'Please select correct date of birth';
-            dobInput.value = ''; 
-        } else {
-            dobError.textContent = '';
-        }
-    });
+            dobInput.addEventListener('change', function () {
+                const selectedDate = new Date(dobInput.value);
+                const currentDate = new Date();
+                currentDate.setHours(0, 0, 0, 0);
+
+                if (selectedDate.getTime() >= currentDate.getTime()) {
+                    dobError.textContent = 'Please select correct date of birth';
+                    dobInput.value = '';
+                } else {
+                    dobError.textContent = '';
+                }
+            });
 
 
             const registrationForm = document.getElementById('registrationForm');
@@ -198,39 +207,38 @@
             }
 
             document.getElementById('nextToOtpBtn').addEventListener('click', function (event) {
-                // Validate registration form inputs
-                // If valid, proceed to OTP verification
+               
                 const firstName = document.getElementById('firstname').value;
                 const lastName = document.getElementById('lastname').value;
                 const email = document.getElementById('email').value;
                 const enrollmentNoInput = document.getElementById('enrollmentno');
-                const enrollmentnovalue=document.getElementById('enrollmentno').value;
-                const dobvalue=document.getElementById('dob').value;
+                const enrollmentnovalue = document.getElementById('enrollmentno').value;
+                const dobvalue = document.getElementById('dob').value;
                 const enrollmentNoError = document.getElementById('enrollmentnoError');
-                const classname=document.getElementById('classname').value;
-                const gender=document.getElementById('gender').value;
-                const employeeid=document.getElementById('employeeid').value;
-                
-                    if(roleSelect.value==='student' && (!firstName || !lastName || !email || !enrollmentNoInput.value || !dobvalue || !classname || !gender))
-                    {
-                      alert('Please fill in all fields.');
-                     event.preventDefault();
-                     return;
+                const classname = document.getElementById('classname').value;
+                const gender = document.getElementById('gender').value;
+                const employeeid = document.getElementById('employeeid').value;
+                const role=roleSelect.value;
+                if (roleSelect.value === 'student' && (!firstName || !lastName || !email || !enrollmentNoInput.value || !dobvalue || !classname || !gender)) {
+                    alert('Please fill in all fields.');
+                    event.preventDefault();
+                    return;
+                }
+                else {
+                    if (roleSelect.value === 'teacher' && (!firstName || !lastName || !email || !employeeid || !dobvalue || !gender)) {
+                        alert('Please fill in all fields.');
+                        event.preventDefault();
+                        return;
                     }
-                    else  {
-                        if(roleSelect.value==='teacher' && (!firstName || !lastName || !email || !employeeid || !dobvalue || !gender)){
-                             alert('Please fill in all fields.');
-                             event.preventDefault();
-                             return;
-                        }
-                    }
+                }
 
                 if (!validateFirstName(firstName) || !validateName(lastName)) {
                     alert('Please enter valid first and last names.');
                     event.preventDefault();
+
                     return;
                 }
-               
+
                 if (!validateEmail(email)) {
                     alert('Please enter a valid email address.');
                     event.preventDefault();
@@ -238,50 +246,67 @@
                 }
 
                 enrollmentNoInput.addEventListener('input', function () {
-                const enrollmentNoValue = enrollmentNoInput.value;
-            if (!/^[a-zA-Z0-9]+$/.test(enrollmentNoValue)) {
-                enrollmentNoError.textContent = 'Enrollment number must be alphanumeric.';
-            } else {
-                enrollmentNoError.textContent = '';
-            }
-        });
-             formData.registrationData = new FormData(registrationForm);
+                    const enrollmentNoValue = enrollmentNoInput.value;
+                    if (!/^[a-zA-Z0-9]+$/.test(enrollmentNoValue)) {
+                        enrollmentNoError.textContent = 'Enrollment number must be alphanumeric.';
+                    } else {
+                        enrollmentNoError.textContent = '';
+                    }
+                });
+                let uniqueId;
+                if(role==='student'){
+                    uniqueId=enrollmentnovalue;
+                }
+                else{
+                    uniqueId=employeeid;
+                }
+                //console.log(registrationForm);
+               
+                formData.firstname=firstName;
+                formData.lastname=lastName;
+                formData.classname=classname;
+                formData.email=email;
+                formData.uniqueId=uniqueId;
+                formData.dob=dobvalue;
+                formData.gender=gender;
+                formData.userType=role;
+                console.log({formData});
                 showOtpForm();
             });
 
-             function validateName(name) {
-                const newname=name.trim();
+            function validateName(name) {
+                const newname = name.trim();
                 const nameRegex = /^[A-Za-z ]+$/;
                 return nameRegex.test(newname);
             }
 
-             function validateFirstName(firstName) {
-                const firstnamenew=firstName.trim();
+            function validateFirstName(firstName) {
+                const firstnamenew = firstName.trim();
                 const nameRegex = /^[^\s]+$/;
-                   return nameRegex.test(firstnamenew);
-                 }
+                return nameRegex.test(firstnamenew);
+            }
 
-           function validateEmail(email) {
+            function validateEmail(email) {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 return emailRegex.test(email);
             }
-         function validatePhoneNumber(phoneNumber) {
+            function validatePhoneNumber(phoneNumber) {
                 const phoneRegex = /^\d{10}$/;
                 return phoneRegex.test(phoneNumber);
             }
 
-           function validatePassword(password) {
-          const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
-          return passwordRegex.test(password);
+            function validatePassword(password) {
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,}$/;
+                return passwordRegex.test(password);
             }
 
+
             document.getElementById('nextToPasswordBtn').addEventListener('click', function (event) {
-                // Validate OTP input and verify
-                // If verified, proceed to password creation   
-                const phoneNumber =document.getElementById('phno').value;
-                if(!phoneNumber){
+
+                const phoneNumber = document.getElementById('phno').value;
+                if (!phoneNumber) {
                     alert('Please fill your number');
-                   event.preventDefault();
+                    event.preventDefault();
                     return;
                 }
                 if (!validatePhoneNumber(phoneNumber, event)) {
@@ -289,7 +314,7 @@
                     event.preventDefault();
                     return;
                 }
-                 formData.otpData = new FormData(otpForm);
+              formData.phno=phoneNumber;
                 showPasswordForm();
             });
             // Function to submit the registration form
@@ -301,6 +326,7 @@
             // Attach submit event listener to the registration form
             registrationForm.addEventListener('submit', function (event) {
                 event.preventDefault();
+
                 submitRegistrationForm();
             });
 
@@ -319,15 +345,15 @@
             // Function to submit the password creation form
             function submitPasswordForm() {
                 // Submit the password form to the server
-
-                alert('Password created successfully!');
+                console.log(formData);
+                sendDataToServer(formData);
             }
 
             // Attach submit event listener to the password form
             passwordForm.addEventListener('submit', function (event) {
-                const password =  document.getElementById('password').value;
+                const password = document.getElementById('password').value;
                 const confirmpassword = document.getElementById('confirmpassword').value;
-                if(password !== confirmpassword){
+                if (password !== confirmpassword) {
                     alert('Password and Confirm password must be same');
                     event.preventDefault();
                     return;
@@ -338,25 +364,18 @@
                     return;
                 }
                 event.preventDefault();
-              
-                formData.passwordData = new FormData(passwordForm);
+
+                formData.password=password;
                 submitPasswordForm();
             });
 
 
-            function sendDataToServer(actionUrl, formData) {
-                // Combine all form data
-                const combinedData = {};
-                for (let data of formData) {
-                    for (let pair of data) {
-                        combinedData[pair[0]] = pair[1];
-                    }
-                }
+            function sendDataToServer(formData) {
 
-                // Make an HTTP request to send data to the server
-                fetch(actionUrl, {
+
+                fetch('/signup', {
                     method: 'POST',
-                    body: JSON.stringify(combinedData),
+                    body: JSON.stringify(formData),
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -371,14 +390,16 @@
                     alert('An error occurred while submitting data!');
                 });
             }
+            console.log(formData);
             // Show the registration form by default
             showRegistrationForm();
         });
     </script>
 </head>
+
 <body>
-        <div class="navbar"></div>
-         <h2>Add User</h2>
+    <div class="navbar"></div>
+    <h2>User Registration</h2>
     <form id="registrationForm" action="/signup/student" method="POST">
         <!-- Registration form fields -->
         <div class="form-group">
@@ -417,13 +438,14 @@
             <!-- Student-specific fields -->
             <div class="form-group">
                 <label for="enrollmentno">Enrollment No:</label>
-                <input type="text" id="enrollmentno" name="enrollmentno" required pattern="[a-zA-Z0-9]+" title="Enrollment number must be alphanumeric">
+                <input type="text" id="enrollmentno" name="enrollmentno" required pattern="[a-zA-Z0-9]+"
+                    title="Enrollment number must be alphanumeric">
                 <small id="enrollmentnoError" style="color: red;"></small>
             </div>
-             <div class="form-group">
-            <label for="classname">Class Name:</label>
-            <input type="text" id="classname" name="classname" required>
-        </div>
+            <div class="form-group">
+                <label for="classname">Class Name:</label>
+                <input type="text" id="classname" name="classname" required>
+            </div>
 
             <!-- Other student-specific fields -->
         </div>
@@ -432,7 +454,8 @@
             <!-- Teacher-specific fields -->
             <div class="form-group">
                 <label for="employeeid">Employee Id:</label>
-                <input type="text" id="employeeid" name="employeeid" required pattern="[a-zA-Z0-9]+" title="Employee Id number must be alphanumeric">
+                <input type="text" id="employeeid" name="employeeid" required pattern="[a-zA-Z0-9]+"
+                    title="Employee Id number must be alphanumeric">
                 <small id="employeeidError" style="color: red;"></small>
             </div>
 
@@ -472,4 +495,5 @@
     </form>
 
 </body>
+
 </html>

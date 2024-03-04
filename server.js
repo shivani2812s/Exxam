@@ -14,15 +14,25 @@ hbs.registerHelper('increment', function(value) {
 hbs.registerHelper('splitOptions', function(optionsString) {
     return optionsString.split(',');
 });
-hbs.registerHelper('eq', function(a, b) {
-    return a === b ? true : false;
+hbs.registerHelper('eq', function (a, b) {
+    return a === b;
+});
+hbs.registerHelper('indexInc', function (index) {
+    return index + 1;
+});
+hbs.registerHelper('getOptionIndex', function (index) {
+    return index + 1;
 });
 
+hbs.registerHelper('getCharForIndex', function (index) {
+    return String.fromCharCode(65 + index);
+});
 const bodyParser=require('body-parser');
 const router = require('./router/route');
 const questionRouter=require('./router/questions');
 const studentRouter=require('./router/students');
 const teacherRouter=require('./router/teachers');
+const adminRouter=require('./router/admin');
 const staticPath = path.join(__dirname, "./static");
 const viewPath = path.join(__dirname, "./views");
 const layoutPath = path.join(__dirname, "./views/layout");
@@ -44,19 +54,12 @@ mongoose.connect(DB, {
 
 
 
-// Question.insertMany(data).then(()=>{
-//   console.log("admin stored sucessfully");
-//   mongoose.connection.close();
-// }).catch((error)=>{
-//   console.log(error);
-//   mongoose.connection.close();
-// })
-
-
 app.use('/',router);
-app.use('/students',studentRouter);
+
 app.use('/questions',questionRouter);
-app.use('/teachers',teacherRouter);
+app.use('/student',studentRouter);
+app.use('/teacher',teacherRouter);
+app.use('/admin',adminRouter);
 
 app.listen(port||3001, () => {
     console.log("Server running on port", port);

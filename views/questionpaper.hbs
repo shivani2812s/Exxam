@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Paper</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #6943ce;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .option {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Exam Details</h2>
+        <table>
+            <tr>
+                <th>Date of Exam</th>
+                <td>{{exam.dateOfExam}}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{{exam.subject}}</td>
+            </tr>
+            <tr>
+                <th>Class</th>
+                <td>{{exam.className}}</td>
+            </tr>
+            <tr>
+                <th>Start Time</th>
+                <td>{{exam.startTime}}</td>
+            </tr>
+            <tr>
+                <th>End Time</th>
+                <td>{{exam.endTime}}</td>
+            </tr>
+            <tr>
+                <th>Total Marks</th>
+                <td>{{exam.totalmarks}}</td>
+            </tr>
+        </table>
+
+        <h2>Question Paper</h2>
+        {{#each Questions}}
+        <div class="question" data-question-id="{{this._id}}">
+            <p>Q.{{indexInc @index}}.{{this.question}}  {<span>{{this.marks}}</span> marks}</p>
+            {{#if (eq this.questionType 'mcq')}}
+            {{#each this.options}}
+            <div class="option">
+                <input type="radio" id="option_{{../_id}}_{{@../index}}_{{@index}}"
+                    name="question_{{../_id}}">
+                <label for="option_{{../_id}}_{{@../index}}_{{@index}}">{{this}}</label>
+            </div>
+            {{/each}}
+            {{else}}
+            <textarea placeholder="Your answer"></textarea>
+            {{/if}}
+        </div>
+        {{/each}}
+        <button onclick="submitExam()">Submit Exam</button>
+    </div>
+    <script>
+        function submitExam() {
+            var answers = [];
+            document.querySelectorAll('.question').forEach(function (question) {
+               var questionId = question.getAttribute('data-question-id');
+                var answer;
+                if (question.querySelector('input[type="radio"]')) {
+                    var selectedOption = question.querySelector('input[type="radio"]:checked');
+                    answer = selectedOption ? selectedOption.nextElementSibling.textContent.trim() : null;
+                } else {
+                    answer = question.querySelector('textarea').value.trim();
+                }
+                answers.push({
+                    questionId: questionId,
+                    answer: answer
+                });
+            });
+            sendAnswersToServer(answers);
+        }
+        function sendAnswersToServer(answers) {
+            fetch('/questions/submitanswers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({answers: answers })
+            })
+                .then(response => response.json())
+                .then(data => {
+                     window.location.href = data.redirectUrl; 
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

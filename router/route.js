@@ -9,8 +9,8 @@ const dashboardController=require('../controllers/dashboardController');
 const {Student}=require('../models/studentModel');
 const {Exam}=require('../models/questions');
 
-router.get('/demodash',(req,res)=>{
-    res.render('demodash')
+router.get('/',(req,res)=>{
+    res.render('login')
 })
 router.get('/',async(req,res)=>{
     const exam = await Exam.find();
