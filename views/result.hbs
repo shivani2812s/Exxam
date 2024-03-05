@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .maindiv {
+            height: 100vh;
+            width: 100%;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+           
+        }
+        button{
+            padding: 15px 15px;
+            background-color: #6843ce;
+            border-radius: 10px;
+            color: white;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="maindiv">
+          <h1 id="totalMarksHeading"></h1>
+        <div class="heading"><h1>Result</h1></div>
+        <div><h3>24/25</h3></div>
+        <div>96%</div>
+        <div><h3>You Can be proud of yourself</h3></div>
+        <div class="buttons">
+            <button>Check Your answer</button>
+            <button>Try Again</button>
+        </div>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+const totalMarks = urlParams.get('totalMarks');
+console.log(totalMarks);
+
+const totalMarksHeading = document.getElementById('totalMarksHeading');
+if (totalMarksHeading) {
+    totalMarksHeading.textContent = `Total Marks: ${totalMarks}`;
+}
+
+    </script>
+</body>
+
+</html>

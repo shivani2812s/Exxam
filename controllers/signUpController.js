@@ -13,7 +13,7 @@ const userSignUp = async (req, res) => {
         const password = await bcrypt.hash(req.body.password, 10);
         user.password = password;
         await user.save();
-        const token = jwt.sign({ email: user.email }, 'xyz');
+        const token = jwt.sign({ userId:user._id,userType:user.userType,email: user.email }, 'xyz');
 
         return res.status(200).json(
             {

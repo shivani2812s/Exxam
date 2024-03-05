@@ -1,3 +1,5 @@
+<!-- questions.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,13 +7,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subjective Questions</title>
+    <!-- Include Quill CSS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <style>
-       body {
-    border: black solid 1px;
-    background-color: #6943ce1f;
-    border-radius: 5px;
-}
+        body {
+            background-color: white;
+        }
+
         .ql-editor {
             box-sizing: border-box;
             line-height: 1.42;
@@ -54,52 +56,54 @@
             align-items: center;
             justify-content: space-around;
         }
-      .file-upload {
-    background-color: #6943ce;
-    color: white;
-    width: 30%;
-}
+
+        .mcq-options label {
+            display: block;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 
 <body>
     <div class="heading1">
-        {{!-- <h1>Answer The Questions</h1> --}}
-        {{#each examdetails}}
-        {{#if this.questions.length}}
+        <h1>Answer The Questions</h1>
+
+       
         <div id="questions">
-            <h4>Attempt All the questions</h4>
-            <h3> Subject: {{this.subject}}</h3>
-            <h3>date:{{this.dateOfExam}}</h3>
-            {{#each this.questions}}
+            
+            {{#each Questions}}
             <div class="question-container">
-                <h3>Question {{increment @index}}</h3>
-                <h4>{{this.question}}</h4>
-                {{#if (eq this.questionType "text")}}
-                <div class="editor"></div>
-                <br>
-                <input type="file" class="file-upload">
-                {{else if (eq this.questionType "mcq")}}
-                {{#each this.options}}
-                <input type="radio" name="mcq_{{@../index}}" value="{{this}}">
-                <label>{{this}}</label><br>
-                {{/each}}
+                <h3>Question {{increment @index}}</h3> 
+                <h4>{{this.question}}</h4> 
+
+                {{#if (eq this.type 'mcq')}}
+              
+                <div class="mcq-options">
+                    {{#each this.options}}
+                    <label>
+                        <input type="radio" name="question{{increment @index}}" value="{{this}}">
+                        {{this}}
+                    </label>
+                    {{/each}}
+                </div>
                 {{/if}}
+
+               
+                <div class="editor"></div>
+
+              
+                <input type="file" class="file-upload">
+
+                <button class="btn" onclick="submitAnswer(this)">Submit Answer</button>
             </div>
             {{/each}}
         </div>
-        {{else}}
-        <div></div>
-        {{/if}}
-        {{/each}}
-        <button class="btn" onclick="submitAnswer(this)">Submit Answer</button>
     </div>
-
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js/dist/tesseract.min.js"></script>
 
     <script>
-        // Function to create a text editor
+      
         function createTextEditor(container) {
             const editor = new Quill(container, {
                 theme: 'snow',
@@ -111,7 +115,7 @@
                         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                         [{ 'indent': '-1' }, { 'indent': '+1' }],
                         [{ 'align': [] }],
-                        ['clean'], 
+                        ['clean'], // Remove formatting
                         [{ 'font': [] }],
                         [{ 'size': ['small', false, 'large', 'huge'] }],
                         [{ 'color': [] }, { 'background': [] }], // Text and background color
@@ -123,57 +127,42 @@
             return editor;
         }
 
+        // Call the function to create text editors for each question
         const editorContainers = document.querySelectorAll('.editor');
         editorContainers.forEach(container => createTextEditor(container));
 
+        // Function to submit answer
         async function submitAnswer(button) {
             const questionContainer = button.closest('.question-container');
             const editorContent = questionContainer.querySelector('.ql-editor').innerHTML;
             const fileInput = questionContainer.querySelector('.file-upload').files[0];
-            console.log(editorContent);
-            const answerData = {
-                textAnswer: editorContent,
-                file: fileInput ? fileInput.name : null
-            };
+            const mcqOptions = questionContainer.querySelectorAll('.mcq-options input[type="radio"]:checked');
 
-            try {
-                const response = await fetch('/save-answer', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(answerData)
-                });
-
-                if (response.ok) {
-                    const responseData = await response.json();
-                    console.log('Answer saved successfully:', responseData);
-                } else {
-                    console.error('Failed to save answer:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error saving answer:', error);
-            }
-
-            
+            // Check if a file is selected
             if (fileInput) {
                 try {
                     const recognizedText = await performOCR(fileInput);
-                    console.log('OCR Text:', recognizedText);
+                    // Append the recognized text to the text editor
+                    console.log(recognizedText);
                 } catch (error) {
                     console.error('Error performing OCR:', error);
                 }
+            } else if (mcqOptions.length > 0) {
+                // Handle MCQ answer
+                const selectedOption = mcqOptions[0].value;
+                console.log('MCQ Answer:', selectedOption);
             } else {
-                console.log('No file selected');
+                console.error('No file or option selected');
             }
         }
 
+        // Function to perform OCR using Tesseract.js
         async function performOCR(imageFile) {
             return new Promise((resolve, reject) => {
                 Tesseract.recognize(
                     imageFile,
-                    'eng', 
-                    { logger: m => console.log(m) } 
+                    'eng', // language code
+                    { logger: m => console.log(m) } // logger
                 ).then(({ data: { text } }) => {
                     resolve(text);
                 }).catch(reject);

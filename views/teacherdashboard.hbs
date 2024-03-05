@@ -1,246 +1,173 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        .maindiv{
-            height:100vh;
+      .maindiv{ height: 100vh; width: 100%; display: flex; background-color:  #fff; }
+
+       .left{ height: 100vh; width: 20%; background-color:black; }
+
+      .right{
+      height: 100vh;
+      width: 80%;
+      background-color: #F1F3F6;
+      display: flex;
+      flex-direction: column;
+      }
+       .navbar{
+            height: 6vh;
             width: 100%;
-            display: flex;
-        }
-        .left{
-            height: 100vh;
-            width: 18%;
-            background-color: black;
-        }
-        .right
-        {
-            height: 100vh;
-            width: 80%;
-             background-color:#F1F3F6;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-         #navbar{
-            height: 50px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-             align-items: center;
-        }
-     
-        .details-section{
-            display: flex;
-            justify-content:space-around ;
-             height: 300px;
-            width: 100%;
-            align-items: center;
-           
-        }
-        .graphdetails{
-            display: flex;
-            height: 300px;
-            width: 100%;
-            align-items: center;
-          justify-content: space-around;
-        }
-        .graphs{
             background-color: #fff;
-            height: 250px;
-            width: 40%;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .det1{
-            height: 200px;
-            width: 40%;
-            background-color: #ffffff;
-            margin: 0px 8px;
+        .heading{
+            height: 100px;
+            width: 400px;
+        margin-left: 20px;
+            color: white;
+        }
+        .details{
+            height: 140px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
         }
         #det1{
-            border-radius: 5px;
-           background-color: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            height: 150px;
+            width: 30%;
+            background-color: white;
             border-radius: 8px;
+            display: flex;
+            align-items: center;
+          margin-left: 10px;
+        }
+          #det2{
+            height: 150px;
+            width: 30%;
+            background-color: white;
+            border-radius: 8px;
+             display: flex;
+            align-items: center;
+             padding: 0px 15px;
+        }
+          #det3{
+            height: 150px;
+            width: 30%;
+            background-color: white;
+            border-radius: 8px;
+             display: flex;
+            align-items: center;
+            justify-content: space-between;
+             padding: 0px 15px;
+        }
+        .selectors{
+            height: 40px;
+            width: 50%;
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+            justify-content: space-around;
+            margin-left: 5px;
+        }
+        .sel{
+            height: 60px;
+            width: 30%;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2px 4px;
+            align-items: center;
+            padding: 0px 5px;
+           display: flex;
+           flex-direction: column;
+        }
+        .sel h4{
+             font-family: 'Times New Roman', Times, serif;
+             font-weight: 600;
+        }
+        #sel1{
+            background-color: #6943ce;
            
         }
-         #det3{
-            border-radius: 5px;
-            background-color:#FFFFFF;
-             border-radius: 8px;
-             display: flex;
-             flex-direction: row;
-             align-items: center;
-             justify-content: space-around;
-            
+        .table{
+              height: 350px;
+              width: 100%;
+              background-color: #fff;
+              margin-top: 20px;
+              color: black;
+               margin-left: 5px;
+               border-radius: 10px;
         }
-         #det2{
-            border-radius: 8px;
-            background-color: rgb(212, 212, 212);
-            display: flex;
-            justify-content: space-between;
-          
-             justify-content: space-between;
-            
-         
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        #graph1{
-            background-color: white;
-            margin: 0px 5px;
-            border-radius: 5px;
+        th, td {
+          font-family:'Times New Roman', Times, serif;
+            padding: 8px;
+            text-align: left;
+           font-weight:500px;
         }
-      #search {
-            margin: 0px 20px;
+        th {
+            background-color: #F8F8F8;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #search{
+              margin: 0px 20px;
             float: right;
-            padding: 8px 25px;
+            padding: 6px 40px;
             border: none;
             margin-top: px;
             margin-right: 16px;
             font-size: 14px;
             border-radius: 5px;
-            background-color: #F1F3F6;
+            background-color:#F1F3F6;
             color: black;
-}
-        .notification{
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
         }
-        .notif{
-            margin: 0 20px;
+        .profile{
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+             background-color:#dadbdd;
+            margin-right: 20px;
         }
-        #image img{
-            height: 200px;
-            width: 270px;
-            display: block;
-  margin-left: auto;
-  margin-right: auto;
-            border-radius: 8px;
-                object-fit: cover;
+        .actimg img{
+            height: 150px;
+            width: 150px;
+            margin-left: 40px;
+            margin-top: 20px
         }
-       .count {
-          padding: 20px 0px;
-          height: 80%;
-          width: 40%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          background-color: #FFFFFF;
-          border-radius: 8px;
-}
-        .count a{
-            text-decoration: none;
-            cursor: pointer;
-            color: rgb(77, 75, 75);
+        .schexam img{
+             height: 130px;
+            width: 150px;
+            margin-left: 40px;
+            margin-top: 20px;
         }
-        .studentimg img{
-            max-width: 100%;
-            display: block;
-             margin-left: auto;
-            margin-right: auto;
-            height: auto;
-             border-radius: 8px;
-             object-fit: cover;
+        .compimg img{
+                  height: 140px;
+            width: 150px;
+            margin-right: 20px;
+          
         }
-      .studentcount {
-    align-items: center;
-    color: white;
-    padding: 0px 40px;
-}
-.studentcount a{
-    text-decoration: none;
-    color: white;
-}
-.simple-bar-chart{
-  --line-count: 10;
-  --line-color: currentcolor;
-  --line-opacity: 0.25;
-  --item-gap: 2%;
-  --item-default-color: #060606;
-  
-  height: 10rem;
-  display: grid;
-  grid-auto-flow: column;
-  gap: var(--item-gap);
-  align-items: end;
-  padding-inline: var(--item-gap);
-  --padding-block: 1.5rem; 
-  padding-block: var(--padding-block);
-  position: relative;
-  isolation: isolate;
-}
+        .student{
+    height: 50px;
+      width: 80%;
+     margin-top: 50px;
+      color: white;
+      align-items: center;
+      margin-left: 20px;
+    margin-top: 80px;
+        }
 
-.simple-bar-chart::after{
-  content: "";
-  position: absolute;
-  inset: var(--padding-block) 0;
-  z-index: -1;
-  --line-width: 1px;
-  --line-spacing: calc(100% / var(--line-count));
-  background-image: repeating-linear-gradient(to top, transparent 0 calc(var(--line-spacing) - var(--line-width)), var(--line-color) 0 var(--line-spacing));
-  box-shadow: 0 var(--line-width) 0 var(--line-color);
-  opacity: var(--line-opacity);
-}
-.simple-bar-chart > .item{
-  height: calc(1% * var(--val));
-  background-color: var(--clr, var(--item-default-color));
-  position: relative;
-  animation: item-height 1s ease forwards
-}
-@keyframes item-height { from { height: 0 } }
-
-.simple-bar-chart > .item > * { position: absolute; text-align: center }
-.simple-bar-chart > .item > .label { inset: 100% 0 auto 0 }
-.simple-bar-chart > .item > .value { inset: auto 0 100% 0 }
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #1D1E22;
-    color: #f0f0f0;
-  }
-}
-#teacher{
-  height: 150px;
-  width: 200px;
-  background-color: white;
-}
-.teacherimg{
-  object-fit: contain;
-  height: 150px;
-  width: 250px;
-}
-#totalteachers{
-  margin-top: -25px;
-}
-.countteacher {
-    margin-right: 5px;
-    padding: 0px 35px;
-}
-.allteachers{
-  text-decoration: none;
-  color:rgb(77, 75, 75);;
-}
-.profile{
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-}.profile img{
-  height: 40px;
-    width: 40px;
-    border-radius: 50%;
-  object-fit: cover;
-}
-#heading1{
-    margin-left: 20px;
-   margin-top: 50px;
-}
-.teacherHeading{
+        .studentHeading{
     margin-top: 110px;
     
 }
@@ -258,92 +185,88 @@ button{
     width: 100px;
    
 }
-.drop{
-    cursor: pointer;
+.logout{
+    height: 200px;
+    width: 100px;
+    background-color: #fff;
+    color: white;
+}
+.profile{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}.profile img{
+  height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  object-fit: cover;
 }
 
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="maindiv">
-        <div class="left">
-            <div class="teacherHeading">
-                <button id="btn" onclick=dashboarddetails><h2 style="color: white;">Teacher Dashboard </h2></button>
-                <div class="dropdown" style="display: block;">
-                   
-                        <div class="drop" id="drop1"><h3 style="color: white;">Student</h3></div>
-                        <div class="drop" id="drop1"><h3 style="color: white;">Exam</h3></div>
-                </div>
+      <div class="left">
+        <div class="studentHeading">
+                <button id="btn" onclick=><h2 style="color: white;">Teacher Dashboard </h2></button>
             </div>
-        </div>
-        <div class="right">
-             <div class="nav" id="navbar">
-            <div>
-                <input id="search" type="text" placeholder="Search here">
-            </div>
-            <div class="profile">
+      </div>
+      <div class="right">
+
+        <div class="navbar">
+          <div class="searchbar"><input
+              id="search"
+              placeholder="Search here"
+              type="text"
+            /></div>
+           <div class="profile">
               <img src="https://th.bing.com/th/id/OIP.Zz8pe-cvrFn_Na00119ixAAAAA?w=302&h=302&rs=1&pid=ImgDetMain">
              </div>
         </div>
-         <h1 id="heading1" style="color: black;">Welcome Teacher!</h1>
-        <div class="details-section">
-           
-            <div class="det1" id="det1">
-                <div class="studentcount">
-                  <a href="/students/allstudents"> <h3 style="color: #060606;">Total Students</h3></a> 
-                    <h1 style="color: #060606;">2000+</h1>
-                </div>
-                <div class="studentimg">
-                    <img src="https://th.bing.com/th/id/OIP.j9N_bS8T5b_2RvufVqCI9gHaE7?rs=1&pid=ImgDetMain">
-                </div>
+
+        <div class="heading"><h1 style="color: black;">Welcome Teacher!</h1></div>
+
+        <div class="details">
+          <div class="det" id="det1">
+            <div><h3 style="color: rgb(94, 92, 92);"><a style="text-decoration: none;color:rgb(94, 92, 92)" href="/questions/create/exam">Create Exams</a></h3></div>
+            <div class="actimg">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/5203/5203273.png"
+              />
             </div>
-            <div class="det1" id="det2">
-                <div class="count" id="count">
-                    <div><h2 style="color: rgb(92, 90, 90);"><a href="/questions/view/exam">Active Exams</a></h2></div>
-                   <div><h1>5</h1></div> 
-                </div>
-                <div id="image">
-                    <img src="https://cdn.milenio.com/uploads/media/2023/03/02/carrera.jpg">
-                </div>
+
+          </div>
+
+          <div class="det" id="det2">
+            <div><h3 style="color: rgb(94, 92, 92);"><a style="text-decoration: none;color:rgb(94, 92, 92)" href="/questions/view/exam">Scheduled Exams</a></h3></div>
+            <div class="schexam">
+              <img
+                src="https://th.bing.com/th/id/OIP.0eduVy_Uj0P_IoSob7-_4QHaGf?rs=1&pid=ImgDetMain"
+              />
             </div>
-            <div class="det1" id="det3">
-              <div id="totalteachers"><h1><a class="allteachers" href="/teachers/allteachers">Total Teachers</a></h1>
-               <h1 class="countteacher">3</h1></div>
-             
-              <div id="teacher"><img class="teacherimg" src="https://static.vecteezy.com/system/resources/previews/001/307/837/original/school-teacher-with-green-chalkboard-holding-a-book-vector.jpg"></div>
+          </div>
+
+          <div class="det" id="det3">
+            <div><h3 style="color: rgb(94, 92, 92);"><a style="text-decoration: none; color:rgb(94, 92, 92)" href="/questions/view/response">Exam Response</a></h3></div>
+            <div class="compimg">
+              <img
+                src="https://image.freepik.com/free-vector/job-exam-test-vector-illustration_138676-243.jpg"
+              />
             </div>
+          </div>
         </div>
-        <div class="graphdetails">
-            <div class="graphs" id="graph1">
-                <div class="simple-bar-chart">
-  
-  <div class="item" style="--clr: #a304ff; --val: 80">
-    <div class="value">80%</div>
-  </div>
-  
-  <div class="item" style="--clr: #2F314B; --val: 50">
-    <div class="value">50%</div>
-  
-  </div>
-  
-  <div class="item" style="--clr: #E0393E; --val: 15">
-    <div class="value">15%</div>
-  </div>
-  
-</div>
-            </div>
-            <div class="graphs" id="graph2">
-                
-            </div>
+
+        <div class="selectors">
+          <div class="sel" id="sel1">
+            <div><h4 style="color: white;">Active Exams</h4></div>
+            <div></div>
+          </div>
+          <div class="sel" id="sel2"><h4>Scheduled Exams</h4></div>
+          <div class="sel" id="sel3"><h4>Response</h4></div>
         </div>
-        </div>
+
+      </div>
+      
     </div>
-    <script>
-        function dashboarddetails{
-            const btn=document.getElementsByClassName('dropdown');
-            const drop=document.getElementById('btn');
-            drop.style.display='block';
-        }
-    </script>
-</body>
+  </body>
 </html>

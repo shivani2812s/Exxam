@@ -174,13 +174,12 @@
         <input type="time" id="startTime" placeholder="Enter Start Time">
         <label for="endTime">End Time</label><br>
         <input type="time" id="endTime" placeholder="Enter End Time">
-        <label for="totalmarks">Total Marks</label>
-        <input id="totalmarks" required="true" type="number" placeholder="Enter total marks">
       </div>
       <div id="questionsContainer"></div>
       <div class="btn">
         <button id="addQuestionBtn">Add</button>
         <button id="submitBtn">Submit</button>
+        <div id="totalMarks">Total Marks: 0</div>
       </div>
     </div>
   </div>
@@ -288,20 +287,22 @@
         if (questionCount === 0) {
           document.getElementById('submitBtn').style.display = 'none';
         }
-        updateTotalMarks();
+        updateTotalMarks(); // Update total marks when a question is removed
       });
 
+      // Marks input
       const marksInput = document.createElement('input');
       marksInput.type = 'number';
       marksInput.className = 'marks-input';
       marksInput.placeholder = 'Enter Marks';
       questionDiv.appendChild(marksInput);
 
-    
+      // Answer input
       const answerInput = document.createElement('input');
       answerInput.type = 'text';
       answerInput.placeholder = 'Enter Correct Answer';
       questionDiv.appendChild(answerInput);
+
       questionDiv.appendChild(questionTypeSelect);
       questionDiv.appendChild(questionTextarea);
       questionDiv.appendChild(optionsDiv);
@@ -338,10 +339,9 @@
       const startTime = document.getElementById('startTime').value.trim();
       const endTime = document.getElementById('endTime').value.trim();
       const examType = document.getElementById('examType').value.trim();
-      const totalmarks=document.getElementById('totalmarks').value.trim();
       const questionsData = [];
 
-      if (date === '' || subject === '' || classname === '' || startTime === '' || endTime === '' || examType === ''||totalmarks==='' ) {
+      if (date === '' || subject === '' || classname === '' || startTime === '' || endTime === '' || examType === '') {
         window.alert('Please fill in all fields.');
         return;
       }
@@ -361,6 +361,7 @@
         
         questionsData.push({ questionType, question, options, marks, answer });
       }
+
       const examData = {
         dateOfExam: date,
         subject: subject,
@@ -368,15 +369,15 @@
         startTime: startTime,
         endTime: endTime,
         examType: examType,
-        totalmarks:totalmarks,
         questions: questionsData
       };
 
       console.log(examData);
-
+    const token=localStorage.getItem('token');
       const xhr = new XMLHttpRequest();
       xhr.open('POST', '/questions/create/exam');
       xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       xhr.onload = function () {
         if (xhr.status === 201) {
           alert('Exam created successfully');

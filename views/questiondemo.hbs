@@ -54,7 +54,7 @@
             padding: 8px 16px;
             font-size: 14px;
             cursor: pointer;
-            background-color: #6943ce;
+            background-color: #4caf50;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -65,6 +65,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Exam Details</h2>
@@ -89,10 +90,6 @@
                 <th>End Time</th>
                 <td>{{exam.endTime}}</td>
             </tr>
-            <tr>
-                <th>Total Marks</th>
-                <td>{{exam.totalmarks}}</td>
-            </tr>
         </table>
 
         <h2>Question Paper</h2>
@@ -102,10 +99,10 @@
             {{#if (eq this.questionType 'mcq')}}
             {{#each this.options}}
             <div class="option">
-                <input type="radio" id="option_{{../_id}}_{{@../index}}_{{@index}}"
-                    name="question_{{../_id}}">
+                <input type="radio" id="option_{{../_id}}_{{@../index}}_{{@index}}" name="question_{{../_id}}">
                 <label for="option_{{../_id}}_{{@../index}}_{{@index}}">{{this}}</label>
             </div>
+
             {{/each}}
             {{else}}
             <textarea placeholder="Your answer"></textarea>
@@ -113,12 +110,14 @@
         </div>
         {{/each}}
         <button onclick="submitExam()">Submit Exam</button>
+
     </div>
     <script>
         function submitExam() {
             var answers = [];
             document.querySelectorAll('.question').forEach(function (question) {
-               var questionId = question.getAttribute('data-question-id');
+                var questionId = question.getAttribute('data-question-id');
+                console.log(questionId);
                 var answer;
                 if (question.querySelector('input[type="radio"]')) {
                     var selectedOption = question.querySelector('input[type="radio"]:checked');
@@ -126,24 +125,30 @@
                 } else {
                     answer = question.querySelector('textarea').value.trim();
                 }
+
                 answers.push({
                     questionId: questionId,
                     answer: answer
                 });
             });
+            console.log(answers);
             sendAnswersToServer(answers);
         }
+
         function sendAnswersToServer(answers) {
+            const examid = `{{{exam._id}}}`;
+            const token=localStorage.getItem('token');
             fetch('/questions/submitanswers', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify({answers: answers })
+                body: JSON.stringify({ examid,answers: answers })
             })
                 .then(response => response.json())
                 .then(data => {
-                     window.location.href = data.redirectUrl; 
+                    window.location.href = data.redirectUrl;
                 })
                 .catch(error => console.error('Error:', error));
         }

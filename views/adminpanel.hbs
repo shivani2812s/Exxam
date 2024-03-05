@@ -351,6 +351,10 @@
                         width: 100%;
                     }  
                 }
+                button{
+                    border-radius: 8px;
+                    border-color: gray;
+                }
     </style>
 </head>
 
@@ -370,6 +374,9 @@
                     </div>
                     <div class="drop">
                         <h5 style="color: white;">Exam</h5>
+                    </div>
+                    <div class="drop">
+                        <button><h5 style="color: white;"><a style="color: white; text-decoration:none" href="/signup">Enroll User</a></h5></button>
                     </div>
                 </div>
 
@@ -404,7 +411,7 @@
             <div class="details-section">
                 <div class="det1" id="det3">
                     <div id="totalteachers">
-                        <h1 onclick="teacherchanges()">Total Teachers</h1>
+                        <h1><a class="allteachers" href="/teachers/allteachers">Total Teachers</a></h1>
                         <h1 class="countteacher">3</h1>
                     </div>
 
@@ -414,22 +421,22 @@
                 </div>
                 <div class="det1" id="det3">
                     <div id="totalteachers">
-                        <h1><a class="allteachers" href="/student/allstudents">Total Students</a></h1>
+                        <h1><a class="allteachers" href="/teachers/allteachers">Total Students</a></h1>
                         <h1 class="countteacher">3</h1>
                     </div>
 
                     <div id="teacher"><img class="teacherimg"
-                            src="https://th.bing.com/th/id/OIP.ANOz9XXscmWjKoBcLrlb5QHaHa?rs=1&pid=ImgDetMain">
+                            src="https://cdn-icons-png.flaticon.com/512/5203/5203273.png">
                     </div>
                 </div>
                 <div class="det1" id="det3">
                     <div id="totalteachers">
-                        <h1><a class="allteachers" href="/teachers/allteachers">Total Exams</a></h1>
+                        <h1><a class="allteachers" href="/questions/view/response">Total Exams</a></h1>
                         <h1 class="countteacher">3</h1>
                     </div>
 
                     <div id="teacher"><img class="teacherimg"
-                            src="https://i.pinimg.com/originals/e5/c6/ae/e5c6aeb82f4b1e8d0cf64e00bc5add24.png">
+                            src="https://th.bing.com/th/id/OIP.0eduVy_Uj0P_IoSob7-_4QHaGf?rs=1&pid=ImgDetMain">
                     </div>
                 </div>
             </div>
@@ -457,22 +464,15 @@
 
                 </div>
             </div>
-     
+        </div>
     </div>
-    
     <script>
-        function teacherchanges(){
-            document.getElementById('heading1').display='none';
-            document.getElementsByClassName('details-section').display='none';
-            document.getElementsByClassName('graphdetails').display='none';
-        }
         function toggleDropdown(id) {
             var dropdown = document.getElementById(id);
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         }
 
         function dashboarddetails(type) {
-            // Add your logic for dashboard details based on the type (Admin/Teacher/Student)
             console.log(type + ' Dashboard clicked');
         }
     </script>

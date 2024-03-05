@@ -30,8 +30,8 @@ hbs.registerHelper('getCharForIndex', function (index) {
 const bodyParser=require('body-parser');
 const router = require('./router/route');
 const questionRouter=require('./router/questions');
-const studentRouter=require('./router/students');
-const teacherRouter=require('./router/teachers');
+const studentRouter=require('./router/student');
+const teacherRouter=require('./router/teacher');
 const adminRouter=require('./router/admin');
 const staticPath = path.join(__dirname, "./static");
 const viewPath = path.join(__dirname, "./views");

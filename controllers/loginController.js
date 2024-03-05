@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken'); 
+const jwt = require('jsonwebtoken'); // Import the jwt module
 
 const Student = require('../models/studentModel');
 const Teacher = require('../models/teacherModel');
@@ -24,7 +24,7 @@ const userlogin = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ email: user.email, userType: user.userType }, 'xyz');
+        const token = jwt.sign({ userId:user._id,userType:user.userType,email: user.email }, 'xyz');
 
         return res.status(200).json({
             message: 'Login successful',

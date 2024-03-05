@@ -13,6 +13,36 @@ const userSchema=new mongoose.Schema({
     userType: String,
 })
 
+// For teacher
+// Body :
+// {
+//     firstname,
+//     lastname,
+//     password,
+//     gender,
+//     phno,
+//     uniqueId,
+//     email,
+//     dob,
+//     userType
+// }
+
+// For student
+// Body :
+// {
+//     firstname,
+//     lastname,
+//     password,
+//     gender,
+//     phno,
+//     uniqueId,
+//     email,
+//     dob,
+//     classname,
+//     userType
+// }
+
+
 userSchema.methods.generateAuthToken = async function generateToken(){
     try {
         const token = jwt.sign({ _id: this._id.toString(),userType: this.userType.toString() }, 'my secret key', {
